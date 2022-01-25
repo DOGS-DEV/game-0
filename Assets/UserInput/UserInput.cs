@@ -33,6 +33,14 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""37b4d5a8-d7c9-4ca1-be63-bbe93751f750"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -178,6 +186,17 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32d6c065-1bd6-4147-8011-e119d7313dd8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -188,6 +207,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
         m_PlayerInput_Movement = m_PlayerInput.FindAction("Movement", throwIfNotFound: true);
         m_PlayerInput_Rotation = m_PlayerInput.FindAction("Rotation", throwIfNotFound: true);
+        m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -239,12 +259,14 @@ public class @UserInput : IInputActionCollection, IDisposable
     private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
     private readonly InputAction m_PlayerInput_Movement;
     private readonly InputAction m_PlayerInput_Rotation;
+    private readonly InputAction m_PlayerInput_Jump;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
         public PlayerInputActions(@UserInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerInput_Movement;
         public InputAction @Rotation => m_Wrapper.m_PlayerInput_Rotation;
+        public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -260,6 +282,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @Rotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRotation;
                 @Rotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRotation;
                 @Rotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRotation;
+                @Jump.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -270,6 +295,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @Rotation.started += instance.OnRotation;
                 @Rotation.performed += instance.OnRotation;
                 @Rotation.canceled += instance.OnRotation;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -278,5 +306,6 @@ public class @UserInput : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRotation(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

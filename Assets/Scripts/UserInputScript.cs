@@ -4,29 +4,41 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class UserInputScript : MonoBehaviour
 {
-    protected Rigidbody rigidbodyObject;
+    private Rigidbody rigidbodyObject;
 
-    public float moveSpeed, rotateSpeed, rotateAngle;
-    Vector3 movingVector = Vector3.zero;
+    public float moveSpeed, rotateSpeed, rotateAngle, forceJump;
+    private Vector3 movingVector = Vector3.zero;
+    private float rotateDirection = .0f;
 
-    Coroutine movingCoroutine;
+    private Coroutine movingCoroutine;
+    private Coroutine rotationCoroutine;
 
     private void Start()
     {
         // Set initial values for variables
-        moveSpeed = 30.0f;
-        rotateSpeed = .3f;
-        rotateAngle = 5.0f;
+        moveSpeed = 25.0f;
+        rotateSpeed = .1f;
+        rotateAngle = 2.0f;
+        forceJump = 45.0f;
 
         //Get components
         rigidbodyObject = GetComponent<Rigidbody>();
+        rigidbodyObject.mass = 15;
+        rigidbodyObject.drag = 1f;
     }
 
     private void Update()
     {
+        // Moving
         if (movingVector != Vector3.zero)
         {
             movingCoroutine = StartCoroutine(MovingCoroutine());
+        }
+
+        // Rotation
+        if (rotateDirection == -1 | rotateDirection == 1)
+        {
+            rotationCoroutine = StartCoroutine(RotationCoroutine(rotateDirection));
         }
     }
 
@@ -36,7 +48,6 @@ public class UserInputScript : MonoBehaviour
         if (context.performed)
         {
             Vector2 direction = context.ReadValue<Vector2>();
-            Debug.Log(direction);
 
             switch ((direction.x, direction.y))
             {
@@ -66,7 +77,12 @@ public class UserInputScript : MonoBehaviour
 
     public void OnRotate(CallbackContext context)
     {
-        Debug.Log("OnRotate");
+        rotateDirection = context.performed ? context.ReadValue<float>() : .0f;
+    }
+
+    public void OnJump(CallbackContext context)
+    {
+        rigidbodyObject.AddForce(transform.up * forceJump, ForceMode.Impulse);
     }
     #endregion
 
@@ -82,6 +98,19 @@ public class UserInputScript : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    private IEnumerator RotationCoroutine(float direction)
+    {
+        if (direction == -1)
+        {
+            transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, -rotateAngle, Space.World);
+        }
+        else if (direction == 1)
+        {
+            transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, rotateAngle, Space.World);
+        }
+        else yield return null;
     }
     #endregion
 }
