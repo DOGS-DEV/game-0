@@ -61,10 +61,10 @@ namespace Game0
             }
         }
 
-        protected override void OnRotation()
-        {
-            rotateDirection = Keyboard.current.qKey.isPressed ? -1 : Keyboard.current.eKey.isPressed ? 1 : 0;
-        }
+        //protected override void OnRotation()
+        //{
+        //    rotateDirection = Keyboard.current.qKey.isPressed ? -1 : Keyboard.current.eKey.isPressed ? 1 : 0;
+        //}
 
         protected override void OnJumping()
         {

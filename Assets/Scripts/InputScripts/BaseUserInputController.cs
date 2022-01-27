@@ -10,17 +10,18 @@ namespace Game0
         #region Variables and properties
 
         protected Rigidbody rigidbodyObject;
+        protected Animator animator;
 
         [SerializeField] private float moveSpeed;
         [SerializeField] private float rotateSpeed;
-        [SerializeField] private float rotateAngle;
+        //[SerializeField] private float rotateAngle;
         [SerializeField] private float forceJump;
 
         protected Vector3 movingVector;
         protected Coroutine movingCoroutine;
 
-        protected float rotateDirection;
-        protected Coroutine rotationCoroutine;
+        //protected float rotateDirection;
+        //protected Coroutine rotationCoroutine;
 
         protected bool isCanJump;
         protected bool isJumping;
@@ -34,13 +35,13 @@ namespace Game0
         {
             // Set Set Initial Values to Variables
             moveSpeed = 25.0f;
-            rotateSpeed = .1f;
-            rotateAngle = 2.0f;
+            rotateSpeed = 8f;
+            //rotateAngle = 2.0f;
             forceJump = 45.0f;
 
             movingVector = Vector3.zero;
 
-            rotateDirection = .0f;
+            //rotateDirection = .0f;
 
             isCanJump = true;
             isJumping = false;
@@ -49,6 +50,8 @@ namespace Game0
             rigidbodyObject = GetComponent<Rigidbody>();
             rigidbodyObject.mass = 15;
             rigidbodyObject.drag = 1.0f;
+
+            animator = GetComponent<Animator>();
         }
 
         private void Update()
@@ -61,11 +64,11 @@ namespace Game0
             }
 
             // Rotation
-            OnRotation();
-            if (rotateDirection == -1 | rotateDirection == 1)
-            {
-                rotationCoroutine = StartCoroutine(OnRotationCoroutine(rotateDirection));
-            }
+            //OnRotation();
+            //if (rotateDirection == -1 | rotateDirection == 1)
+            //{
+            //    rotationCoroutine = StartCoroutine(OnRotationCoroutine(rotateDirection));
+            //}
 
             // Jumping
             OnJumping();
@@ -93,7 +96,7 @@ namespace Game0
 
         #region Methods
         protected abstract void OnMoving();
-        protected abstract void OnRotation();
+        //protected abstract void OnRotation();
         protected abstract void OnJumping();
         #endregion
 
@@ -102,27 +105,36 @@ namespace Game0
         {
             if (movingVector != Vector3.zero)
             {
-                rigidbodyObject.velocity += movingVector * moveSpeed * Time.fixedDeltaTime;
+                Vector3 clampingVector = Vector3.ClampMagnitude(movingVector, 1);
+
+                // Rotate For direction
+                if (movingVector.magnitude > Mathf.Abs(0.1f))
+                {
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(movingVector), Time.fixedDeltaTime * rotateSpeed);
+                }
+
+                // Play animation
+                animator.SetFloat("speed", clampingVector.magnitude);
+
+                // Add velocity with vector limit to 1
+                rigidbodyObject.velocity += clampingVector * moveSpeed * Time.fixedDeltaTime;
+
                 yield return new WaitForFixedUpdate();
-            }
-            else
-            {
-                yield return null;
             }
         }
 
-        private IEnumerator OnRotationCoroutine(float direction)
-        {
-            if (direction == -1)
-            {
-                transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, -rotateAngle, Space.World);
-            }
-            else if (direction == 1)
-            {
-                transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, rotateAngle, Space.World);
-            }
-            else yield return null;
-        }
+        //private IEnumerator OnRotationCoroutine(float direction)
+        //{
+        //    if (direction == -1)
+        //    {
+        //        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, -rotateAngle, Space.World);
+        //    }
+        //    else if (direction == 1)
+        //    {
+        //        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, rotateAngle, Space.World);
+        //    }
+        //    else yield return null;
+        //}
 
         private IEnumerator OnJumpingCoroutine()
         {
