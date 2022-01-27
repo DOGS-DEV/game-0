@@ -32,6 +32,8 @@ namespace Game0
                 // Stop animation
                 animator.SetFloat("speed", 0);
 
+                
+
                 movingVector = Vector3.zero;
             }
         }
