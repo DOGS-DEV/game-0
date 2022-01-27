@@ -4,6 +4,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class UserInputScript : MonoBehaviour
 {
+    #region Variables and properties
     private Rigidbody rigidbodyObject;
 
     public float moveSpeed, rotateSpeed, rotateAngle, forceJump;
@@ -12,7 +13,9 @@ public class UserInputScript : MonoBehaviour
 
     private Coroutine movingCoroutine;
     private Coroutine rotationCoroutine;
+    #endregion
 
+    #region Native methods
     private void Start()
     {
         // Set initial values for variables
@@ -41,6 +44,7 @@ public class UserInputScript : MonoBehaviour
             rotationCoroutine = StartCoroutine(RotationCoroutine(rotateDirection));
         }
     }
+    #endregion
 
     #region Moving methods
     public void OnMoving(CallbackContext context)
@@ -52,10 +56,10 @@ public class UserInputScript : MonoBehaviour
             switch ((direction.x, direction.y))
             {
                 case (-1, 0):
-                    movingVector = Vector3.left;
+                    movingVector = -transform.right;
                     break;
                 case (1, 0):
-                    movingVector = Vector3.right;
+                    movingVector = transform.right;
                     break;
                 case (0, -1):
                     movingVector = -transform.forward;
