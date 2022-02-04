@@ -28,6 +28,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "OnMouseLeftButtonClick",
+                    "type": "Button",
+                    "id": "9b6c6b00-1bce-4f3f-8702-b6ee22c089c4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "OnMousePosition",
+                    "type": "PassThrough",
+                    "id": "26c15669-cccd-4bbb-9a4d-c217a7e795d6",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -182,6 +198,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7ef0801-125f-4f78-a8dd-4302f9554dda",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnMouseLeftButtonClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c4e989b-8ebd-41e4-9309-aca54dfe2860",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnMousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -41,6 +41,22 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""OnMouseLeftButtonClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b6c6b00-1bce-4f3f-8702-b6ee22c089c4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""OnMousePosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""26c15669-cccd-4bbb-9a4d-c217a7e795d6"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -197,6 +213,28 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7ef0801-125f-4f78-a8dd-4302f9554dda"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnMouseLeftButtonClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c4e989b-8ebd-41e4-9309-aca54dfe2860"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnMousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +246,8 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput_Movement = m_PlayerInput.FindAction("Movement", throwIfNotFound: true);
         m_PlayerInput_Rotation = m_PlayerInput.FindAction("Rotation", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerInput_OnMouseLeftButtonClick = m_PlayerInput.FindAction("OnMouseLeftButtonClick", throwIfNotFound: true);
+        m_PlayerInput_OnMousePosition = m_PlayerInput.FindAction("OnMousePosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -260,6 +300,8 @@ public class @UserInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_Movement;
     private readonly InputAction m_PlayerInput_Rotation;
     private readonly InputAction m_PlayerInput_Jump;
+    private readonly InputAction m_PlayerInput_OnMouseLeftButtonClick;
+    private readonly InputAction m_PlayerInput_OnMousePosition;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
@@ -267,6 +309,8 @@ public class @UserInput : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_PlayerInput_Movement;
         public InputAction @Rotation => m_Wrapper.m_PlayerInput_Rotation;
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
+        public InputAction @OnMouseLeftButtonClick => m_Wrapper.m_PlayerInput_OnMouseLeftButtonClick;
+        public InputAction @OnMousePosition => m_Wrapper.m_PlayerInput_OnMousePosition;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,6 +329,12 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
+                @OnMouseLeftButtonClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
+                @OnMouseLeftButtonClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
+                @OnMouseLeftButtonClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
+                @OnMousePosition.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePosition;
+                @OnMousePosition.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePosition;
+                @OnMousePosition.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePosition;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,6 +348,12 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @OnMouseLeftButtonClick.started += instance.OnOnMouseLeftButtonClick;
+                @OnMouseLeftButtonClick.performed += instance.OnOnMouseLeftButtonClick;
+                @OnMouseLeftButtonClick.canceled += instance.OnOnMouseLeftButtonClick;
+                @OnMousePosition.started += instance.OnOnMousePosition;
+                @OnMousePosition.performed += instance.OnOnMousePosition;
+                @OnMousePosition.canceled += instance.OnOnMousePosition;
             }
         }
     }
@@ -307,5 +363,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnRotation(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnOnMouseLeftButtonClick(InputAction.CallbackContext context);
+        void OnOnMousePosition(InputAction.CallbackContext context);
     }
 }
