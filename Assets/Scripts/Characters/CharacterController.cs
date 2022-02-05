@@ -28,7 +28,7 @@ namespace Game0
             // Subscribe to input events
             userInput = new UserInput();
             userInput.Enable();
-            userInput.PlayerInput.OnMousePosition.performed += OnMouseScreenPosition;
+            userInput.PlayerInput.OnMousePan.performed += OnMouseScreenPosition;
             userInput.PlayerInput.OnMouseLeftButtonClick.performed += OnMouseLeftButtonClick;
             userInput.PlayerInput.OnMouseLeftButtonClick.canceled += OnMouseLeftButtonClick;
         }
@@ -48,7 +48,7 @@ namespace Game0
 
         private void OnDestroy()
         {
-            userInput.PlayerInput.OnMousePosition.performed -= OnMouseScreenPosition;
+            userInput.PlayerInput.OnMousePan.performed -= OnMouseScreenPosition;
             userInput.PlayerInput.OnMouseLeftButtonClick.performed -= OnMouseLeftButtonClick;
             userInput.PlayerInput.OnMouseLeftButtonClick.canceled -= OnMouseLeftButtonClick;
             userInput.PlayerInput.Disable();
