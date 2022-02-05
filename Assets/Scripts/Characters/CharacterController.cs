@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.LowLevel;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Game0
@@ -9,16 +8,15 @@ namespace Game0
     [RequireComponent(typeof(NavMeshAgent))]
     public class CharacterController : MonoBehaviour
     {
-        private Camera mainCamera;
-        private NavMeshAgent chatacter;
-        //private Rigidbody rigidbodyObject;
+        private NavMeshAgent agent;
         private Animator animator;
         public GameObject targetDestination;
         private UserInput userInput;
-        private Vector2 mouseScreenPosion;
-
-        private Vector3 movingPoint;
-        protected Coroutine movingCoroutine;
+        public LayerMask whatCanBeClickedOn;
+        [SerializeField, Range(10.0f,100.0f)] private float allowableClickDistance = 50f;
+        private bool leftButtonMouseClick = false;
+        private Vector2 mouseScreenPosion = Vector2.zero;
+        private RaycastHit hitInfo;
 
         #region MonoBehaviour methods
         private void Start()
@@ -28,9 +26,16 @@ namespace Game0
 
         private void Update()
         {
-            if (movingPoint != Vector3.zero)
+            if (leftButtonMouseClick)
             {
-                movingCoroutine = StartCoroutine(OnMovingCoroutine(chatacter, movingPoint));
+                Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosion);
+                
+
+                if (Physics.Raycast(ray, out hitInfo, 100, whatCanBeClickedOn))
+                { 
+                    targetDestination.transform.position = hitInfo.point;
+                    agent.SetDestination(hitInfo.point);
+                }
             }
         }
 
@@ -38,6 +43,7 @@ namespace Game0
         {
             userInput.PlayerInput.OnMousePosition.performed -= OnMouseScreenPosition;
             userInput.PlayerInput.OnMouseLeftButtonClick.performed -= OnMouseLeftButtonClick;
+            userInput.PlayerInput.OnMouseLeftButtonClick.canceled -= OnMouseLeftButtonClick;
             userInput.PlayerInput.Disable();
             userInput.Dispose();
         }
@@ -48,19 +54,15 @@ namespace Game0
         private void ComponentInitialization()
         {
             //Getting and setting components
-            mainCamera = Camera.main;
-            chatacter = GetComponent<NavMeshAgent>();
+            agent = GetComponent<NavMeshAgent>();
             animator = GetComponentInChildren<Animator>();
-
-            //rigidbodyObject = GetComponent<Rigidbody>();
-            //rigidbodyObject.mass = 15;
-            //rigidbodyObject.drag = 1.0f;
 
             // Subscribe to input events
             userInput = new UserInput();
             userInput.Enable();
             userInput.PlayerInput.OnMousePosition.performed += OnMouseScreenPosition;
             userInput.PlayerInput.OnMouseLeftButtonClick.performed += OnMouseLeftButtonClick;
+            userInput.PlayerInput.OnMouseLeftButtonClick.canceled += OnMouseLeftButtonClick;
         }
 
         public void OnMouseScreenPosition(CallbackContext context)
@@ -73,31 +75,7 @@ namespace Game0
 
         public void OnMouseLeftButtonClick(CallbackContext context)
         {
-            if (context.performed & mouseScreenPosion != Vector2.zero)
-            {
-                Ray ray = mainCamera.ScreenPointToRay(mouseScreenPosion);
-                RaycastHit hitPoint;
-
-                if (Physics.Raycast(ray, out hitPoint))
-                {
-                    targetDestination.transform.position = movingPoint = hitPoint.point;
-                }
-            }
-        }
-
-        private IEnumerator OnMovingCoroutine(NavMeshAgent agent, Vector3 point)
-        {
-            agent.SetDestination(point);
-            animator.SetFloat("speed", 1.0f);
-
-
-
-            //while (agent.pathStatus == NavMeshPathStatus.PathPartial)
-            //{
-                
-            //    Debug.Log($"{agent.pathStatus}");
-            //}
-            yield return null;
+            leftButtonMouseClick = context.performed ? true : false;
         }
         #endregion
     }
