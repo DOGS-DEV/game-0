@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.InputSystem.InputAction;
@@ -8,8 +7,8 @@ namespace Game0
     [RequireComponent(typeof(NavMeshAgent))]
     public class CharacterController : MonoBehaviour
     {
+        #region Variables and properties
         private NavMeshAgent agent;
-        private Animator animator;
         public GameObject targetDestination;
         private UserInput userInput;
         public LayerMask whatCanBeClickedOn;
@@ -17,11 +16,21 @@ namespace Game0
         private bool leftButtonMouseClick = false;
         private Vector2 mouseScreenPosion = Vector2.zero;
         private RaycastHit hitInfo;
+        #endregion
 
         #region MonoBehaviour methods
         private void Start()
         {
-            ComponentInitialization();
+            //Getting and setting components
+            agent = GetComponent<NavMeshAgent>();
+            agent.updatePosition = false;
+
+            // Subscribe to input events
+            userInput = new UserInput();
+            userInput.Enable();
+            userInput.PlayerInput.OnMousePosition.performed += OnMouseScreenPosition;
+            userInput.PlayerInput.OnMouseLeftButtonClick.performed += OnMouseLeftButtonClick;
+            userInput.PlayerInput.OnMouseLeftButtonClick.canceled += OnMouseLeftButtonClick;
         }
 
         private void Update()
@@ -29,9 +38,7 @@ namespace Game0
             if (leftButtonMouseClick)
             {
                 Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosion);
-                
-
-                if (Physics.Raycast(ray, out hitInfo, 100, whatCanBeClickedOn))
+                if (Physics.Raycast(ray, out hitInfo, allowableClickDistance, whatCanBeClickedOn))
                 { 
                     targetDestination.transform.position = hitInfo.point;
                     agent.SetDestination(hitInfo.point);
@@ -47,24 +54,9 @@ namespace Game0
             userInput.PlayerInput.Disable();
             userInput.Dispose();
         }
-
         #endregion
 
         #region Methods
-        private void ComponentInitialization()
-        {
-            //Getting and setting components
-            agent = GetComponent<NavMeshAgent>();
-            animator = GetComponentInChildren<Animator>();
-
-            // Subscribe to input events
-            userInput = new UserInput();
-            userInput.Enable();
-            userInput.PlayerInput.OnMousePosition.performed += OnMouseScreenPosition;
-            userInput.PlayerInput.OnMouseLeftButtonClick.performed += OnMouseLeftButtonClick;
-            userInput.PlayerInput.OnMouseLeftButtonClick.canceled += OnMouseLeftButtonClick;
-        }
-
         public void OnMouseScreenPosition(CallbackContext context)
         {
             if (context.performed)
