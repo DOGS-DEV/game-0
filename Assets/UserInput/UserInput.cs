@@ -49,6 +49,14 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraPan"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac61d8af-1a7c-4fec-9813-647f3eebf8e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -95,6 +103,116 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""OnMouseRightButtonClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""15ac121d-1ccc-4cc1-aa88-e830135ff4ef"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""472369e1-81df-42b9-8cb3-1cf46749779f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""ef6f7e1e-ffca-48c2-968a-f7c1bb298fcc"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""36a7bd15-f33d-4c01-94a8-11499adf6009"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""69199bbc-fc3e-430b-b811-e946beea3cbe"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""c781e4e4-48af-4084-9109-ad5dbbda1588"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""3326d13c-9f2e-4683-bebc-3926f0463cec"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8cc29a16-c47b-487e-a12a-5d0717ee0a6a"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a970d5d7-22aa-421c-b157-8085762e2724"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""1bc0fcf4-2515-4ee1-98cd-861a06a62f5d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraPan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -107,6 +225,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput_OnMouseRightButtonClick = m_PlayerInput.FindAction("OnMouseRightButtonClick", throwIfNotFound: true);
         m_PlayerInput_OnMousePan = m_PlayerInput.FindAction("OnMousePan", throwIfNotFound: true);
         m_PlayerInput_OnMouseZoom = m_PlayerInput.FindAction("OnMouseZoom", throwIfNotFound: true);
+        m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,6 +279,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_OnMouseRightButtonClick;
     private readonly InputAction m_PlayerInput_OnMousePan;
     private readonly InputAction m_PlayerInput_OnMouseZoom;
+    private readonly InputAction m_PlayerInput_CameraPan;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
@@ -168,6 +288,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         public InputAction @OnMouseRightButtonClick => m_Wrapper.m_PlayerInput_OnMouseRightButtonClick;
         public InputAction @OnMousePan => m_Wrapper.m_PlayerInput_OnMousePan;
         public InputAction @OnMouseZoom => m_Wrapper.m_PlayerInput_OnMouseZoom;
+        public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -189,6 +310,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @OnMouseZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
                 @OnMouseZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
                 @OnMouseZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
+                @CameraPan.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
+                @CameraPan.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
+                @CameraPan.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -205,6 +329,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @OnMouseZoom.started += instance.OnOnMouseZoom;
                 @OnMouseZoom.performed += instance.OnOnMouseZoom;
                 @OnMouseZoom.canceled += instance.OnOnMouseZoom;
+                @CameraPan.started += instance.OnCameraPan;
+                @CameraPan.performed += instance.OnCameraPan;
+                @CameraPan.canceled += instance.OnCameraPan;
             }
         }
     }
@@ -215,5 +342,6 @@ public class @UserInput : IInputActionCollection, IDisposable
         void OnOnMouseRightButtonClick(InputAction.CallbackContext context);
         void OnOnMousePan(InputAction.CallbackContext context);
         void OnOnMouseZoom(InputAction.CallbackContext context);
+        void OnCameraPan(InputAction.CallbackContext context);
     }
 }
