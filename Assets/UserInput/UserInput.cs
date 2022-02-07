@@ -57,6 +57,14 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""bce85139-affb-4f22-8c82-aa753a25b2db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -213,6 +221,39 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""CameraPan"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""1a4728ae-8e1a-4597-a217-7a27a696a6ab"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""028600f4-6a8e-498e-8171-ecb645e65fbb"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""af5a7e91-fcf8-4b7b-a9ec-413297d66cc5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -226,6 +267,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput_OnMousePan = m_PlayerInput.FindAction("OnMousePan", throwIfNotFound: true);
         m_PlayerInput_OnMouseZoom = m_PlayerInput.FindAction("OnMouseZoom", throwIfNotFound: true);
         m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
+        m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -280,6 +322,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_OnMousePan;
     private readonly InputAction m_PlayerInput_OnMouseZoom;
     private readonly InputAction m_PlayerInput_CameraPan;
+    private readonly InputAction m_PlayerInput_CameraRotation;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
@@ -289,6 +332,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         public InputAction @OnMousePan => m_Wrapper.m_PlayerInput_OnMousePan;
         public InputAction @OnMouseZoom => m_Wrapper.m_PlayerInput_OnMouseZoom;
         public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
+        public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -313,6 +357,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @CameraPan.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
                 @CameraPan.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
                 @CameraPan.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
+                @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -332,6 +379,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @CameraPan.started += instance.OnCameraPan;
                 @CameraPan.performed += instance.OnCameraPan;
                 @CameraPan.canceled += instance.OnCameraPan;
+                @CameraRotation.started += instance.OnCameraRotation;
+                @CameraRotation.performed += instance.OnCameraRotation;
+                @CameraRotation.canceled += instance.OnCameraRotation;
             }
         }
     }
@@ -343,5 +393,6 @@ public class @UserInput : IInputActionCollection, IDisposable
         void OnOnMousePan(InputAction.CallbackContext context);
         void OnOnMouseZoom(InputAction.CallbackContext context);
         void OnCameraPan(InputAction.CallbackContext context);
+        void OnCameraRotation(InputAction.CallbackContext context);
     }
 }

@@ -1759,6 +1759,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aim: {fileID: 669241943}
+  movementSpeed: 0
+  movementTime: 0
+  rotationAmount: 0
   cameraPanAndZoomString: {fileID: 1237850013}
   zoomCameraSpeed: 3
 --- !u!1 &1975814132
