@@ -3,6 +3,8 @@ using Cinemachine;
 using static UnityEngine.InputSystem.InputAction;
 using System.Collections;
 
+enum RotationDirection { None, Left, Right }
+
 namespace Game0
 {
     public class CameraController : MonoBehaviour
@@ -15,6 +17,11 @@ namespace Game0
         private CinemachineCameraOffset cinemachineCameraOffset;
 
         [Header("Pan, rotate and zoom camera")]
+        [SerializeField, Range(20, 60)] private int camFov;
+        [SerializeField, Range(-10, 20)] private int camOffsetX;
+        [SerializeField, Range(-10, 20)] private int camOffsetY;
+        //[SerializeField, Range(-10, 20)] private int camOffsetZ;
+
         [SerializeField, Range(0.05f, 0.5f)] private float camPanSpeed;
         private Vector3 camPanVector;
         [SerializeField, Range(10, 30)] public int camPanRadius;
@@ -24,12 +31,9 @@ namespace Game0
         [SerializeField, Range(10, 20)] private int camMaxZoom;
         [SerializeField, Range(1, 10)] private float camZoomSpeed;
 
-
-
-        //[SerializeField, Range(1, 5)] public float rotationAmount;
-
-
-        private bool isKeysHoldToZoom;
+        private RotationDirection rotationDirection;
+        [SerializeField, Range(1, 5)] public float rotationAmount;
+        private bool isKeysHoldToRotate;
         private Coroutine rotationCameraCorutine;
 
         #endregion
@@ -50,34 +54,62 @@ namespace Game0
             camPanVector = Vector3.zero;
             camPanSpeed = 0.15f;
             camPanRadius = 5;
-
-            //rotationAmount = 3;
+            
             camMaxZoom = 15;
             camZoomSpeed = 4f;
 
-            isKeysHoldToPan = isKeysHoldToZoom = false;
+            rotationDirection = RotationDirection.None;
+            rotationAmount = 3;
+
+            isKeysHoldToPan = isKeysHoldToRotate = false;
 
             cinemachineCameraOffset.m_Offset = Vector3.zero;
-            cinemachineVirtualCamera.m_Lens.FieldOfView = 45;
+            camOffsetX = camOffsetY  = 0;
+
+            cinemachineVirtualCamera.m_Lens.FieldOfView = camFov = 45;
         }
 
         private void Update()
         {
+            SetCameraSettings();
 
             if (camPanVector != Vector3.zero)
             {
                 panCameraCorutine = StartCoroutine(PanCameraCorutine());
             }
 
-            //if (cameraRotationDirection != CameraRotationDirection.None)
-            //{
-            //    rotationCameraCorutine = StartCoroutine(RotationCameraCorutine());
-            //}
+            if (rotationDirection != RotationDirection.None)
+            {
+                rotationCameraCorutine = StartCoroutine(RotationCameraCorutine());
+            }
         }
 
         #endregion
 
         #region Methods
+
+        private void SetCameraSettings()
+        {
+            if (cinemachineVirtualCamera.m_Lens.FieldOfView != camFov)
+            {
+                cinemachineVirtualCamera.m_Lens.FieldOfView = camFov;
+            }
+
+            if (cinemachineCameraOffset.m_Offset.x != camOffsetX)
+            {
+                cinemachineCameraOffset.m_Offset.x = camOffsetX;
+            }
+
+            if (cinemachineCameraOffset.m_Offset.y != camOffsetY)
+            {
+                cinemachineCameraOffset.m_Offset.y = camOffsetY;
+            }
+
+            //if (cinemachineCameraOffset.m_Offset.z != camOffsetZ)
+            //{
+            //    cinemachineCameraOffset.m_Offset.z = camOffsetZ;
+            //}
+        }
 
         private void SetAimRelativeCharacter()
         {
@@ -141,28 +173,38 @@ namespace Game0
 
         public void OnCameraRotationChanged(CallbackContext context)
         {
-            // Старое
-            //isKeysHoldToZoom = context.started || context.performed ? true : false;
-            
-            //if (context.performed)
-            //{
-            //    ToggleAim(false);
+            switch (context.phase)
+            {
+                case UnityEngine.InputSystem.InputActionPhase.Started:
+                    {
+                        isKeysHoldToRotate = true;
+                        break;
+                    }
+                case UnityEngine.InputSystem.InputActionPhase.Performed:
+                    {
+                        float rotateDir = context.ReadValue<float>();
+                        switch (rotateDir)
+                        {
+                            case -1:
+                                rotationDirection = RotationDirection.Left;
+                                break;
+                            case 1:
+                                rotationDirection = RotationDirection.Right;
+                                break;
+                            default:
+                                rotationDirection = RotationDirection.None;
+                                break;
+                        }
 
-            //    float rotationDirection = context.ReadValue<float>();
-            //    switch (rotationDirection)
-            //    {
-            //        case -1:
-            //            cameraRotationDirection = CameraRotationDirection.Left;
-            //            break;
-            //        case 1:
-            //            cameraRotationDirection = CameraRotationDirection.Right;
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
+                        isKeysHoldToRotate = true;
+                        break;
+                    }
+                default:
+                    rotationDirection = RotationDirection.None;
+                    isKeysHoldToRotate = false;
+                    break;
 
-            //if (context.canceled) cameraRotationDirection = CameraRotationDirection.None;
+            }
         }
 
         public void OnCameraZoomChanged(CallbackContext context)
@@ -175,9 +217,9 @@ namespace Game0
                 float zoom = context.ReadValue<float>();
 
                 if (zoom > 0)
-                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(co.z, camMaxZoom, camZoomSpeed * Time.deltaTime);
+                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(cinemachineCameraOffset.m_Offset.z, camMaxZoom, camZoomSpeed * Time.deltaTime);
                 else if (zoom < 0)
-                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(co.z, 0, camZoomSpeed * Time.deltaTime);
+                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(cinemachineCameraOffset.m_Offset.z, 0, camZoomSpeed * Time.deltaTime);
             }
         }
 
@@ -197,24 +239,26 @@ namespace Game0
 
         private IEnumerator RotationCameraCorutine()
         {
-            //while (isKeysHoldToZoom)
-            //{
-                //Quaternion newRotation = transform.rotation;
+            while(isKeysHoldToRotate)
+            {
+                Quaternion newRotation = cinemachineVirtualCamera.transform.rotation;
 
-                //switch (cameraRotationDirection)
-                //{
-                //    case CameraRotationDirection.None:
-                //        yield break;
-                //    case CameraRotationDirection.Left:
-                //        newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
-                //        break;
-                //    case CameraRotationDirection.Right:
-                //        newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
-                //        break;
-                //}
-                //transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * panCameraTime);
+                switch (rotationDirection)
+                {
+                    case RotationDirection.Left:
+                        newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
+                        break;
+                    case RotationDirection.Right:
+                        newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
+                        break;
+                    default:
+                        yield break;
+                }
+
+                cinemachineVirtualCamera.transform.rotation *= Quaternion.Lerp(cinemachineVirtualCamera.transform.rotation, newRotation, Time.deltaTime * 10);
+
                 yield return null;
-           // }
+            }
         }
 
         #endregion
