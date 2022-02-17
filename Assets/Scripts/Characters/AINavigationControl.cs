@@ -28,7 +28,9 @@ namespace Game0
             groundDeltaPosition.x = Vector3.Dot(transform.right, worldDeltaPosition);
             groundDeltaPosition.y = Vector3.Dot(transform.forward, worldDeltaPosition);
             velocity = Time.deltaTime > 1e-5f ? groundDeltaPosition / Time.deltaTime : Vector2.zero;
+
             bool shouldMove = velocity.magnitude > 0.025f && agent.remainingDistance > agent.radius;
+
             animator.SetBool("isMoving", shouldMove);
             animator.SetFloat("velx", velocity.x);
             animator.SetFloat("vely", velocity.y);

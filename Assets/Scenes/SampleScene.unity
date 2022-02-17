@@ -322,8 +322,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 615639938}
+  - component: {fileID: 615639940}
+  - component: {fileID: 615639939}
   m_Layer: 0
-  m_Name: CharacterHead
+  m_Name: CharacterAim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -337,12 +339,61 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 615639937}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.27, z: 0.01}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.27, z: 0.15}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 669241943}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &615639939
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615639937}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &615639940
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615639937}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5f1ae4712da66455a81bc8dfb1ba5c93, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &617423344
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,9 +404,8 @@ GameObject:
   m_Component:
   - component: {fileID: 617423346}
   - component: {fileID: 617423345}
-  - component: {fileID: 617423347}
   m_Layer: 0
-  m_Name: CMCamera01
+  m_Name: CMVirtualCamera01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -403,29 +453,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617423344}
-  m_LocalRotation: {x: 0.27566665, y: -0.36525118, z: 0.11418487, w: 0.8817944}
-  m_LocalPosition: {x: 13.348389, y: 11.843756, z: -15.930176}
+  m_LocalRotation: {x: 0.27566668, y: -0.36525115, z: 0.114184864, w: 0.8817944}
+  m_LocalPosition: {x: 13.348389, y: 11.843756, z: -15.790161}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 793952119}
   m_Father: {fileID: 1961085061}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 27.848, y: -75.818, z: -15.571}
---- !u!114 &617423347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617423344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerIndex: -1
-  XYAxis: {fileID: -5392167588059398696, guid: d4dbb10570f2d41daa90ec465539564d, type: 3}
-  ZAxis: {fileID: 4622217394923890884, guid: d4dbb10570f2d41daa90ec465539564d, type: 3}
+  m_LocalEulerAnglesHint: {x: 34.721, y: -43.7, z: 0}
 --- !u!1 &669241940
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,6 +474,7 @@ GameObject:
   - component: {fileID: 669241944}
   - component: {fileID: 669241942}
   - component: {fileID: 669241945}
+  - component: {fileID: 669241946}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -532,6 +568,84 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &669241946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669241940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: d4dbb10570f2d41daa90ec465539564d, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 669241944}
+        m_TargetAssemblyTypeName: Game0.CharacterController, Assembly-CSharp
+        m_MethodName: OnMouseLeftButtonClick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9b6c6b00-1bce-4f3f-8702-b6ee22c089c4
+    m_ActionName: PlayerInput/OnMouseLeftButtonClick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7a6379a1-82e1-4261-96fb-91c9f0559036
+    m_ActionName: PlayerInput/OnMouseRightButtonClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 669241944}
+        m_TargetAssemblyTypeName: Game0.CharacterController, Assembly-CSharp
+        m_MethodName: OnMouseScreenPosition
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 26c15669-cccd-4bbb-9a4d-c217a7e795d6
+    m_ActionName: PlayerInput/OnMousePan[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3350e9b6-166f-479e-a16c-3bc6a978ba0c
+    m_ActionName: PlayerInput/OnMouseZoom[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ac61d8af-1a7c-4fec-9813-647f3eebf8e6
+    m_ActionName: PlayerInput/CameraPan[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bce85139-affb-4f22-8c82-aa753a25b2db
+    m_ActionName: PlayerInput/CameraRotation[/Keyboard/q,/Keyboard/e]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerInput
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 963194227}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,11 +816,11 @@ MonoBehaviour:
   m_VerticalDamping: 0
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.1
-  m_DeadZoneHeight: 0.2
-  m_SoftZoneWidth: 0.4
-  m_SoftZoneHeight: 0.4
-  m_BiasX: 0
+  m_DeadZoneWidth: 0.55
+  m_DeadZoneHeight: 0.57
+  m_SoftZoneWidth: 0.92
+  m_SoftZoneHeight: 0.9
+  m_BiasX: 0.00000048328087
   m_BiasY: 0
   m_CenterOnActivate: 1
 --- !u!114 &793952121
@@ -721,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
+  m_BindingMode: 4
   m_FollowOffset: {x: 10, y: 10, z: -10}
   m_XDamping: 4
   m_YDamping: 4
@@ -885,13 +999,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.27566665, y: -0.36525118, z: 0.11418487, w: 0.8817944}
-  m_LocalPosition: {x: 13.348389, y: 11.843756, z: -15.930176}
+  m_LocalRotation: {x: 0.27566668, y: -0.36525115, z: 0.114184864, w: 0.8817944}
+  m_LocalPosition: {x: 13.348389, y: 11.843756, z: -15.790161}
   m_LocalScale: {x: 0.93750006, y: 1.1209052, z: 1.0124282}
   m_Children: []
   m_Father: {fileID: 1961085061}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,7 +1241,6 @@ GameObject:
   - component: {fileID: 1630502878}
   - component: {fileID: 1630502877}
   - component: {fileID: 1630502876}
-  - component: {fileID: 1630502875}
   m_Layer: 0
   m_Name: TargetDestination
   m_TagString: Untagged
@@ -1135,20 +1248,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &1630502875
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630502874}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &1630502876
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1543,6 +1642,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1961085061}
+  - component: {fileID: 1961085062}
+  - component: {fileID: 1961085063}
   m_Layer: 0
   m_Name: Cameras
   m_TagString: Untagged
@@ -1566,3 +1667,134 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1961085062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961085060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d9e7fbc7c244e23ac9c07fcabc20db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charecter: {fileID: 669241940}
+  panCameraSpeed: 0
+  panCameraTime: 0
+  rotationAmount: 0
+  zoomCameraSpeed: 0
+--- !u!114 &1961085063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961085060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: d4dbb10570f2d41daa90ec465539564d, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1961085062}
+        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
+        m_MethodName: OnMouseLeftButtonClicked
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9b6c6b00-1bce-4f3f-8702-b6ee22c089c4
+    m_ActionName: PlayerInput/OnMouseLeftButtonClick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1961085062}
+        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
+        m_MethodName: OnMouseRightButtonClicked
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7a6379a1-82e1-4261-96fb-91c9f0559036
+    m_ActionName: PlayerInput/OnMouseRightButtonClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 26c15669-cccd-4bbb-9a4d-c217a7e795d6
+    m_ActionName: PlayerInput/OnMousePan[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1961085062}
+        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
+        m_MethodName: OnCameraZoomChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3350e9b6-166f-479e-a16c-3bc6a978ba0c
+    m_ActionName: PlayerInput/OnMouseZoom[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1961085062}
+        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
+        m_MethodName: OnCameraPanChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ac61d8af-1a7c-4fec-9813-647f3eebf8e6
+    m_ActionName: PlayerInput/CameraPan[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1961085062}
+        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
+        m_MethodName: OnCameraRotationChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bce85139-affb-4f22-8c82-aa753a25b2db
+    m_ActionName: PlayerInput/CameraRotation[/Keyboard/q,/Keyboard/e]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerInput
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 963194227}

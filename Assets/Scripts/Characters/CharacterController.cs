@@ -10,7 +10,6 @@ namespace Game0
         #region Variables and properties
         private NavMeshAgent agent;
         public GameObject targetDestination;
-        private UserInput userInput;
         public LayerMask whatCanBeClickedOn;
         [SerializeField, Range(10.0f,100.0f)] private float allowableClickDistance = 50f;
         private bool leftButtonMouseClick = false;
@@ -21,16 +20,8 @@ namespace Game0
         #region MonoBehaviour methods
         private void Start()
         {
-            //Getting and setting components
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
-
-            // Subscribe to input events
-            userInput = new UserInput();
-            userInput.Enable();
-            userInput.PlayerInput.OnMousePan.performed += OnMouseScreenPosition;
-            userInput.PlayerInput.OnMouseLeftButtonClick.performed += OnMouseLeftButtonClick;
-            userInput.PlayerInput.OnMouseLeftButtonClick.canceled += OnMouseLeftButtonClick;
         }
 
         private void Update()
@@ -46,14 +37,6 @@ namespace Game0
             }
         }
 
-        private void OnDestroy()
-        {
-            userInput.PlayerInput.OnMousePan.performed -= OnMouseScreenPosition;
-            userInput.PlayerInput.OnMouseLeftButtonClick.performed -= OnMouseLeftButtonClick;
-            userInput.PlayerInput.OnMouseLeftButtonClick.canceled -= OnMouseLeftButtonClick;
-            userInput.PlayerInput.Disable();
-            userInput.Dispose();
-        }
         #endregion
 
         #region Methods
