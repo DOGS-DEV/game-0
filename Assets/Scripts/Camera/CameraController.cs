@@ -8,18 +8,19 @@ namespace Game0
     public class CameraController : MonoBehaviour
     {
         #region Variables and properties
-        [SerializeField] private GameObject charecter;
+        [SerializeField] private GameObject character;
         private Transform characterAim;
 
         private CinemachineVirtualCamera cinemachineVirtualCamera;
 
         [Header("Pan, rotate and zoom camera")]
-        [SerializeField, Range(1, 5)] private float panCameraSpeed;
-        [SerializeField, Range(1, 10)] private float panCameraTime;
-        [SerializeField, Range(1, 5)] public float rotationAmount;
-        [SerializeField, Range(1, 10)] private float zoomCameraSpeed;
+        [SerializeField, Range(0.05f, 0.5f)] private float panCameraSpeed;
+        //[SerializeField, Range(1, 5)] public float rotationAmount;
+        //[SerializeField, Range(1, 10)] private float zoomCameraSpeed;
 
         private bool isKeysHoldToPan;
+        private Vector3 cameraPanVector;
+        [SerializeField, Range(10,30)] public int maxCameraPanRadius;
         private Coroutine panCameraCorutine;
 
         private bool isKeysHoldToZoom;
@@ -38,13 +39,15 @@ namespace Game0
         private void Start()
         {
             // Camera aim search for Pan, Rotate, and Zoom
-            characterAim = charecter.transform.Find("CharacterAim");
+            characterAim = character.transform.Find("CharacterAim");
             SetAimRelativeCharacter();
 
-            panCameraSpeed = 0.5f;
-            panCameraTime = 3;
-            rotationAmount = 3;
-            zoomCameraSpeed = 10f;
+            cameraPanVector = Vector3.zero;
+            panCameraSpeed = 0.15f;
+            maxCameraPanRadius = 5;
+
+            //rotationAmount = 3;
+            //zoomCameraSpeed = 10f;
 
             isKeysHoldToPan = isKeysHoldToZoom = false;
 
@@ -53,10 +56,11 @@ namespace Game0
 
         private void Update()
         {
-            //if (cameraPanDirection != CameraPanDirection.None)
-            //{
-            //    panCameraCorutine = StartCoroutine(PanCameraCorutine());
-            //}
+
+            if (cameraPanVector != Vector3.zero)
+            {
+                panCameraCorutine = StartCoroutine(PanCameraCorutine());
+            }
 
             //if (cameraRotationDirection != CameraRotationDirection.None)
             //{
@@ -70,7 +74,7 @@ namespace Game0
 
         private void SetAimRelativeCharacter()
         {
-            characterAim.position = charecter.transform.position;
+            characterAim.position = character.transform.position;
             characterAim.Translate(0, 1.27f, 0);
         }
 
@@ -86,55 +90,58 @@ namespace Game0
 
         public void OnCameraPanChanged(CallbackContext context)
         {
-            Vector2 destination = context.ReadValue<Vector2>();
+            switch (context.phase)
+            {
+                case UnityEngine.InputSystem.InputActionPhase.Started:
+                    {
+                        isKeysHoldToPan = true;
+                        break;
+                    }
+                case UnityEngine.InputSystem.InputActionPhase.Performed:
+                    {
 
-            // Horizontal speed pan camera 
-            float hsp = panCameraSpeed * destination.x;
+                        isKeysHoldToPan = true;
 
-            // Vertical speed pan camera 
-            float vsp = panCameraSpeed * destination.y;
+                        Vector2 destination = context.ReadValue<Vector2>();
 
-            Vector3 lateralMove = hsp * cinemachineVirtualCamera.transform.right;
-            Vector3 forwardMove = cinemachineVirtualCamera.transform.forward;
-            forwardMove.y = 0;
-            forwardMove.Normalize();
-            forwardMove *= vsp;
+                        // Horizontal speed pan camera 
+                        float hsp = panCameraSpeed * destination.x;
 
-            Vector3 move = lateralMove + forwardMove;
-            characterAim.position += move;
+                        // Vertical speed pan camera 
+                        float vsp = panCameraSpeed * destination.y;
 
+                        Vector3 lateralMove = hsp * cinemachineVirtualCamera.transform.right;
 
-            //cinemachineVirtualCamera.transform.position += move;
+                        Vector3 forwardMove = cinemachineVirtualCamera.transform.forward;
+                        forwardMove.y = 0;
+                        forwardMove.Normalize();
+                        forwardMove *= vsp;
 
-            //isKeysHoldToPan = context.started || context.performed ? true : false;
+                        cameraPanVector = lateralMove + forwardMove;
 
-            //if (context.performed)
-            //{
-            //    ToggleAim(false);
-            //    Vector2 destination = context.ReadValue<Vector2>();
-
-            //    if (destination.y == 1)
-            //        cameraPanDirection = CameraPanDirection.Up;
-            //    else if (destination.y == -1)
-            //        cameraPanDirection = CameraPanDirection.Down;
-            //    else if (destination.x == 1)
-            //        cameraPanDirection = CameraPanDirection.Left;
-            //    else if (destination.x == -1)
-            //        cameraPanDirection = CameraPanDirection.Right;
-            //}
-
-            //if (context.canceled) cameraPanDirection = CameraPanDirection.None;
+                        break;
+                    }
+                case UnityEngine.InputSystem.InputActionPhase.Canceled:
+                    {
+                        isKeysHoldToPan = false;
+                        cameraPanVector = Vector3.zero;
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
 
         public void OnCameraRotationChanged(CallbackContext context)
         {
-            float rotationDirection = context.ReadValue<float>();
+            // Новое 
+            //float rotationDirection = context.ReadValue<float>();
 
-            float scrollSpeed = -zoomCameraSpeed * rotationDirection;
+            //float scrollSpeed = -zoomCameraSpeed * rotationDirection;
 
-            Vector3 verticalMove = new Vector3(0, scrollSpeed, 0);
+            //Vector3 verticalMove = new Vector3(0, scrollSpeed, 0);
 
-
+            // Старое
             //isKeysHoldToZoom = context.started || context.performed ? true : false;
             
             //if (context.performed)
@@ -160,45 +167,31 @@ namespace Game0
 
         public void OnCameraZoomChanged(CallbackContext context)
         {
-            if (context.performed)
-            {
-                float fov = cinemachineVirtualCamera.m_Lens.FieldOfView;
+            //if (context.performed)
+            //{
+            //    float fov = cinemachineVirtualCamera.m_Lens.FieldOfView;
 
-                float zoom = context.ReadValue<float>();
+            //    float zoom = context.ReadValue<float>();
 
-                if (zoom > 0)
-                    cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomOutMax, zoomCameraSpeed * Time.deltaTime);
-                else if (zoom < 0) 
-                    cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomInMax, zoomCameraSpeed * Time.deltaTime);
-            }
+            //    if (zoom > 0)
+            //        cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomOutMax, zoomCameraSpeed * Time.deltaTime);
+            //    else if (zoom < 0) 
+            //        cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomInMax, zoomCameraSpeed * Time.deltaTime);
+            //}
         }
 
         private IEnumerator PanCameraCorutine()
         {
-            while (isKeysHoldToPan)
-            {
-                //Vector3 newPosition = transform.position;
+            Vector3 endPosition = characterAim.position + cameraPanVector;
 
-                //switch (cameraPanDirection)
-                //{
-                //    case CameraPanDirection.Up:
-                //        newPosition += (transform.forward * panCameraSpeed);
-                //        break;
-                //    case CameraPanDirection.Down:
-                //        newPosition += (transform.forward * -panCameraSpeed);
-                //        break;
-                //    case CameraPanDirection.Left:
-                //        newPosition += (transform.right * panCameraSpeed);
-                //        break;
-                //    case CameraPanDirection.Right:
-                //        newPosition += (transform.right * -panCameraSpeed);
-                //        break;
-                //    case CameraPanDirection.None:
-                //        yield break;
-                //}
-                //transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * panCameraTime);
-                yield return null;
+            float distance = Vector3.Distance(character.transform.position, endPosition);
+
+            if (distance < maxCameraPanRadius)
+            {
+                characterAim.position += cameraPanVector;
             }
+
+            yield return null;
         }
 
         private IEnumerator RotationCameraCorutine()
@@ -223,11 +216,6 @@ namespace Game0
             }
         }
 
-        private void ToggleAim(bool flag)
-        {
-            cinemachineVirtualCamera.Follow = flag ? characterAim : null;
-            cinemachineVirtualCamera.LookAt = flag ? characterAim : null;
-        }
         #endregion
     }
 }
