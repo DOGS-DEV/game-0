@@ -12,28 +12,33 @@ namespace Game0
         private Transform characterAim;
 
         private CinemachineVirtualCamera cinemachineVirtualCamera;
+        private CinemachineCameraOffset cinemachineCameraOffset;
 
         [Header("Pan, rotate and zoom camera")]
-        [SerializeField, Range(0.05f, 0.5f)] private float panCameraSpeed;
-        //[SerializeField, Range(1, 5)] public float rotationAmount;
-        //[SerializeField, Range(1, 10)] private float zoomCameraSpeed;
-
-        private bool isKeysHoldToPan;
-        private Vector3 cameraPanVector;
-        [SerializeField, Range(10,30)] public int maxCameraPanRadius;
+        [SerializeField, Range(0.05f, 0.5f)] private float camPanSpeed;
+        private Vector3 camPanVector;
+        [SerializeField, Range(10, 30)] public int camPanRadius;
         private Coroutine panCameraCorutine;
+        private bool isKeysHoldToPan;
+
+        [SerializeField, Range(10, 20)] private int camMaxZoom;
+        [SerializeField, Range(1, 10)] private float camZoomSpeed;
+
+
+
+        //[SerializeField, Range(1, 5)] public float rotationAmount;
+
 
         private bool isKeysHoldToZoom;
         private Coroutine rotationCameraCorutine;
 
-        private float zoomInMax = 10f;
-        private float zoomOutMax = 45f;
         #endregion
 
         #region MonoBehaviour methods
         private void Awake()
         {
             cinemachineVirtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+            cinemachineCameraOffset = cinemachineVirtualCamera.GetComponent<CinemachineCameraOffset>();
         }
 
         private void Start()
@@ -42,22 +47,24 @@ namespace Game0
             characterAim = character.transform.Find("CharacterAim");
             SetAimRelativeCharacter();
 
-            cameraPanVector = Vector3.zero;
-            panCameraSpeed = 0.15f;
-            maxCameraPanRadius = 5;
+            camPanVector = Vector3.zero;
+            camPanSpeed = 0.15f;
+            camPanRadius = 5;
 
             //rotationAmount = 3;
-            //zoomCameraSpeed = 10f;
+            camMaxZoom = 15;
+            camZoomSpeed = 4f;
 
             isKeysHoldToPan = isKeysHoldToZoom = false;
 
-            cinemachineVirtualCamera.m_Lens.FieldOfView = zoomOutMax;
+            cinemachineCameraOffset.m_Offset = Vector3.zero;
+            cinemachineVirtualCamera.m_Lens.FieldOfView = 45;
         }
 
         private void Update()
         {
 
-            if (cameraPanVector != Vector3.zero)
+            if (camPanVector != Vector3.zero)
             {
                 panCameraCorutine = StartCoroutine(PanCameraCorutine());
             }
@@ -105,10 +112,10 @@ namespace Game0
                         Vector2 destination = context.ReadValue<Vector2>();
 
                         // Horizontal speed pan camera 
-                        float hsp = panCameraSpeed * destination.x;
+                        float hsp = camPanSpeed * destination.x;
 
                         // Vertical speed pan camera 
-                        float vsp = panCameraSpeed * destination.y;
+                        float vsp = camPanSpeed * destination.y;
 
                         Vector3 lateralMove = hsp * cinemachineVirtualCamera.transform.right;
 
@@ -117,14 +124,14 @@ namespace Game0
                         forwardMove.Normalize();
                         forwardMove *= vsp;
 
-                        cameraPanVector = lateralMove + forwardMove;
+                        camPanVector = lateralMove + forwardMove;
 
                         break;
                     }
                 case UnityEngine.InputSystem.InputActionPhase.Canceled:
                     {
                         isKeysHoldToPan = false;
-                        cameraPanVector = Vector3.zero;
+                        camPanVector = Vector3.zero;
                         break;
                     }
                 default:
@@ -134,13 +141,6 @@ namespace Game0
 
         public void OnCameraRotationChanged(CallbackContext context)
         {
-            // Новое 
-            //float rotationDirection = context.ReadValue<float>();
-
-            //float scrollSpeed = -zoomCameraSpeed * rotationDirection;
-
-            //Vector3 verticalMove = new Vector3(0, scrollSpeed, 0);
-
             // Старое
             //isKeysHoldToZoom = context.started || context.performed ? true : false;
             
@@ -167,28 +167,29 @@ namespace Game0
 
         public void OnCameraZoomChanged(CallbackContext context)
         {
-            //if (context.performed)
-            //{
-            //    float fov = cinemachineVirtualCamera.m_Lens.FieldOfView;
+            // With offset 
+            if (context.performed)
+            {
+                var co = cinemachineCameraOffset.m_Offset;
 
-            //    float zoom = context.ReadValue<float>();
+                float zoom = context.ReadValue<float>();
 
-            //    if (zoom > 0)
-            //        cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomOutMax, zoomCameraSpeed * Time.deltaTime);
-            //    else if (zoom < 0) 
-            //        cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(fov, zoomInMax, zoomCameraSpeed * Time.deltaTime);
-            //}
+                if (zoom > 0)
+                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(co.z, camMaxZoom, camZoomSpeed * Time.deltaTime);
+                else if (zoom < 0)
+                    cinemachineCameraOffset.m_Offset.z = Mathf.Lerp(co.z, 0, camZoomSpeed * Time.deltaTime);
+            }
         }
 
         private IEnumerator PanCameraCorutine()
         {
-            Vector3 endPosition = characterAim.position + cameraPanVector;
+            Vector3 endPosition = characterAim.position + camPanVector;
 
             float distance = Vector3.Distance(character.transform.position, endPosition);
 
-            if (distance < maxCameraPanRadius)
+            if (distance < camPanRadius)
             {
-                characterAim.position += cameraPanVector;
+                characterAim.position += camPanVector;
             }
 
             yield return null;
@@ -196,8 +197,8 @@ namespace Game0
 
         private IEnumerator RotationCameraCorutine()
         {
-            while (isKeysHoldToZoom)
-            {
+            //while (isKeysHoldToZoom)
+            //{
                 //Quaternion newRotation = transform.rotation;
 
                 //switch (cameraRotationDirection)
@@ -213,7 +214,7 @@ namespace Game0
                 //}
                 //transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * panCameraTime);
                 yield return null;
-            }
+           // }
         }
 
         #endregion
