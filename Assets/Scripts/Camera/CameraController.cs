@@ -2,8 +2,7 @@ using UnityEngine;
 using Cinemachine;
 using static UnityEngine.InputSystem.InputAction;
 using System.Collections;
-
-enum RotationDirection { None, Left, Right }
+using UnityEngine.InputSystem;
 
 namespace Game0
 {
@@ -14,13 +13,13 @@ namespace Game0
         private Transform characterAim;
 
         private CinemachineVirtualCamera cinemachineVirtualCamera;
+        private CinemachineTransposer cinemachineTransposer;
         private CinemachineCameraOffset cinemachineCameraOffset;
 
         [Header("Pan, rotate and zoom camera")]
         [SerializeField, Range(20, 60)] private int camFov;
         [SerializeField, Range(-10, 20)] private int camOffsetX;
         [SerializeField, Range(-10, 20)] private int camOffsetY;
-        //[SerializeField, Range(-10, 20)] private int camOffsetZ;
 
         [SerializeField, Range(0.05f, 0.5f)] private float camPanSpeed;
         private Vector3 camPanVector;
@@ -30,9 +29,8 @@ namespace Game0
 
         [SerializeField, Range(10, 20)] private int camMaxZoom;
         [SerializeField, Range(1, 10)] private float camZoomSpeed;
-
-        private RotationDirection rotationDirection;
-        [SerializeField, Range(1, 5)] public float rotationAmount;
+       
+        private float heroRotateDirection;
         private bool isKeysHoldToRotate;
         private Coroutine rotationCameraCorutine;
 
@@ -42,6 +40,7 @@ namespace Game0
         private void Awake()
         {
             cinemachineVirtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
+            cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
             cinemachineCameraOffset = cinemachineVirtualCamera.GetComponent<CinemachineCameraOffset>();
         }
 
@@ -58,8 +57,7 @@ namespace Game0
             camMaxZoom = 15;
             camZoomSpeed = 4f;
 
-            rotationDirection = RotationDirection.None;
-            rotationAmount = 3;
+            heroRotateDirection = 0;
 
             isKeysHoldToPan = isKeysHoldToRotate = false;
 
@@ -78,7 +76,7 @@ namespace Game0
                 panCameraCorutine = StartCoroutine(PanCameraCorutine());
             }
 
-            if (rotationDirection != RotationDirection.None)
+            if (heroRotateDirection == 1 | heroRotateDirection == -1)
             {
                 rotationCameraCorutine = StartCoroutine(RotationCameraCorutine());
             }
@@ -104,11 +102,6 @@ namespace Game0
             {
                 cinemachineCameraOffset.m_Offset.y = camOffsetY;
             }
-
-            //if (cinemachineCameraOffset.m_Offset.z != camOffsetZ)
-            //{
-            //    cinemachineCameraOffset.m_Offset.z = camOffsetZ;
-            //}
         }
 
         private void SetAimRelativeCharacter()
@@ -119,6 +112,7 @@ namespace Game0
 
         public void OnMouseLeftButtonClicked(CallbackContext context)
         {
+            cinemachineTransposer.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
             SetAimRelativeCharacter();
         }
 
@@ -173,37 +167,21 @@ namespace Game0
 
         public void OnCameraRotationChanged(CallbackContext context)
         {
+            cinemachineTransposer.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+           
             switch (context.phase)
             {
-                case UnityEngine.InputSystem.InputActionPhase.Started:
-                    {
-                        isKeysHoldToRotate = true;
-                        break;
-                    }
-                case UnityEngine.InputSystem.InputActionPhase.Performed:
-                    {
-                        float rotateDir = context.ReadValue<float>();
-                        switch (rotateDir)
-                        {
-                            case -1:
-                                rotationDirection = RotationDirection.Left;
-                                break;
-                            case 1:
-                                rotationDirection = RotationDirection.Right;
-                                break;
-                            default:
-                                rotationDirection = RotationDirection.None;
-                                break;
-                        }
-
-                        isKeysHoldToRotate = true;
-                        break;
-                    }
-                default:
-                    rotationDirection = RotationDirection.None;
-                    isKeysHoldToRotate = false;
+                case InputActionPhase.Started:
+                    isKeysHoldToRotate = true;
                     break;
-
+                case InputActionPhase.Performed:
+                    isKeysHoldToRotate = true;
+                    heroRotateDirection = context.ReadValue<float>();
+                    break;
+                default:
+                    isKeysHoldToRotate = false;
+                    heroRotateDirection = 0;
+                    break;
             }
         }
 
@@ -239,25 +217,26 @@ namespace Game0
 
         private IEnumerator RotationCameraCorutine()
         {
-            while(isKeysHoldToRotate)
+            while (isKeysHoldToRotate)
             {
-                Quaternion newRotation = cinemachineVirtualCamera.transform.rotation;
+                var rd = heroRotateDirection;
+                var rs = 0.05f;
+                var ra = 1.0f;
 
-                switch (rotationDirection)
+                if (rd == 1)
                 {
-                    case RotationDirection.Left:
-                        newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
-                        break;
-                    case RotationDirection.Right:
-                        newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
-                        break;
-                    default:
-                        yield break;
+                    characterAim.transform.Rotate(Vector3.up * rs * Time.deltaTime, -ra, Space.World);
+                    yield return null;
                 }
-
-                cinemachineVirtualCamera.transform.rotation *= Quaternion.Lerp(cinemachineVirtualCamera.transform.rotation, newRotation, Time.deltaTime * 10);
-
-                yield return null;
+                else if (rd == -1)
+                {
+                    characterAim.transform.Rotate(Vector3.up * rs * Time.deltaTime, ra, Space.World);
+                    yield return null;
+                }
+                else
+                {
+                    yield break;
+                }
             }
         }
 
