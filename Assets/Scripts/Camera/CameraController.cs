@@ -87,14 +87,12 @@ namespace Game0
             cinemachineVirtualCamera.m_Lens.FieldOfView = camFOVWithOutZoom = 45;
         }
 
-
         private bool MatchingCharacterPositionAndAim()
         {
             return characterAim.position.x == character.transform.position.x
                 && characterAim.position.y == character.transform.position.y //+ 1.27f
                 && characterAim.position.z == character.transform.position.z;
         }
-
 
         private void Update()
         {
@@ -130,7 +128,6 @@ namespace Game0
 
         private void SetCameraSettings()
         {
-
             if (cinemachineCameraOffset.m_Offset.x != camOffsetX)
             {
                 cinemachineCameraOffset.m_Offset.x = camOffsetX;
