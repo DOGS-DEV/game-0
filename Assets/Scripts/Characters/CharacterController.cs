@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.InputSystem.InputAction;
@@ -8,6 +9,7 @@ namespace Game0
     public class CharacterController : MonoBehaviour
     {
         #region Variables and properties
+
         private NavMeshAgent agent;
         public GameObject targetDestination;
         public LayerMask whatCanBeClickedOn;
@@ -15,6 +17,10 @@ namespace Game0
         private bool leftButtonMouseClick = false;
         private Vector2 mouseScreenPosion = Vector2.zero;
         private RaycastHit hitInfo;
+
+        public event EventHandler<Vector3> PointOnMove;
+
+
         #endregion
 
         #region MonoBehaviour methods
@@ -32,6 +38,9 @@ namespace Game0
                 if (Physics.Raycast(ray, out hitInfo, allowableClickDistance, whatCanBeClickedOn))
                 { 
                     targetDestination.transform.position = hitInfo.point;
+
+                    PointOnMove?.Invoke(this, hitInfo.point);
+
                     agent.SetDestination(hitInfo.point);
                 }
             }
