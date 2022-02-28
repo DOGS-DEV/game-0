@@ -13,7 +13,7 @@ namespace Game0
         private CharacterController characterController;
 
         private Transform characterAim;
-        //private Vector3 characterAimTargetPosition;
+        private float offsetAimY = 1.27f;
         private Coroutine setAimRelativeCharacterCoroutine;
 
         private CinemachineVirtualCamera cmVCam;
@@ -53,7 +53,7 @@ namespace Game0
         private void Awake()
         {
             var characterController = character.GetComponent<CharacterController>();
-            characterController.PointOnMove += OnPointOnMoveHandler;
+            characterController.PointOnMoveEvent += OnPointOnMoveEventHandler;
 
             cmVCam = GetComponentInChildren<CinemachineVirtualCamera>();
             cmVCamTransposer = cmVCam.GetCinemachineComponent<CinemachineTransposer>();
@@ -63,8 +63,7 @@ namespace Game0
         private void Start()
         {
             characterAim = cmVCam.Follow;
-            characterAim.position = character.transform.position;
-            //characterAimTargetPosition += new Vector3(0, 1.27f, 0);
+            characterAim.position = DefineCharacterAimPosition();
 
             camFOVWithOutZoom = 45;
             camFOVWithZoom = 60;
@@ -93,21 +92,13 @@ namespace Game0
         private bool MatchingCharacterPositionAndAim()
         {
             return characterAim.position.x == character.transform.position.x
-                && characterAim.position.y == character.transform.position.y //+ 1.27f
+                && characterAim.position.y == character.transform.position.y + 1.27f
                 && characterAim.position.z == character.transform.position.z;
         }
 
         private void Update()
         {
-            //characterAimTargetPosition = character.transform.position;
-            //characterAimTargetPosition += new Vector3(0, 1.27f, 0);
-
             SetCameraSettings();
-
-            if (MatchingCharacterPositionAndAim() && setAimRelativeCharacterCoroutine != null)
-            {
-                StopCoroutine(setAimRelativeCharacterCoroutine);
-            }
 
             if (camPanVector != Vector3.zero)
             {
@@ -142,7 +133,7 @@ namespace Game0
             }
         }
 
-        private void OnPointOnMoveHandler(object sender, Vector3 _)
+        private void OnPointOnMoveEventHandler(object sender, Vector3 _)
         {
             if (cmVCamTransposer.m_BindingMode != CinemachineTransposer.BindingMode.LockToTargetOnAssign)
             {
@@ -317,24 +308,32 @@ namespace Game0
 
         private IEnumerator SetAimRelativeCharacterCoroutine()
         {
-           // float time = 0;
             Vector3 startPosition = characterAim.position;
+            Vector3 targetPosition = DefineCharacterAimPosition();
 
-            while (startPosition != character.transform.position)
+            while (startPosition != DefineCharacterAimPosition())
             {
-                characterAim.position = Vector3.MoveTowards(startPosition, character.transform.position, 0.1f);
-                //time += Time.deltaTime;
+                characterAim.position = Vector3.MoveTowards(startPosition, targetPosition, 0.1f);
                 startPosition = characterAim.position;
+                targetPosition = DefineCharacterAimPosition();
                 yield return null;
             }
-            characterAim.position = character.transform.position;
+            characterAim.position = targetPosition;
             setAimRelativeCharacterCoroutine = null;
             yield break;
 
-            //characterAim.position = character.transform.position;
-            //yield return null;
 
         }
+
+        private Vector3 DefineCharacterAimPosition()
+        {
+            return new Vector3(
+                character.transform.position.x,
+                character.transform.position.y + offsetAimY,
+                character.transform.position.z
+            );
+        }
+
         #endregion
     }
 }

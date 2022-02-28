@@ -18,8 +18,7 @@ namespace Game0
         private Vector2 mouseScreenPosion = Vector2.zero;
         private RaycastHit hitInfo;
 
-        public event EventHandler<Vector3> PointOnMove;
-
+        public event EventHandler<Vector3> PointOnMoveEvent;
 
         #endregion
 
@@ -39,7 +38,7 @@ namespace Game0
                 { 
                     targetDestination.transform.position = hitInfo.point;
 
-                    PointOnMove?.Invoke(this, hitInfo.point);
+                    PointOnMoveEvent?.Invoke(this, hitInfo.point);
 
                     agent.SetDestination(hitInfo.point);
                 }
