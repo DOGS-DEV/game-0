@@ -95,7 +95,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""id"": ""c008f79d-3d85-4013-8df3-a499886e9f51"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
-                    ""processors"": ""Normalize(min=-1,max=1)"",
+                    ""processors"": ""Normalize(min=-120,max=120)"",
                     ""groups"": """",
                     ""action"": ""OnMouseZoom"",
                     ""isComposite"": false,

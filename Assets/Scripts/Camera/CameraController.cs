@@ -53,7 +53,7 @@ namespace Game0
         private void Awake()
         {
             var characterController = character.GetComponent<CharacterController>();
-            characterController.PointOnMoveEvent += OnPointOnMoveEventHandler;
+            characterController.PointOnMoveEvent += PointMoveEventHandler;
 
             cmVCam = GetComponentInChildren<CinemachineVirtualCamera>();
             cmVCamTransposer = cmVCam.GetCinemachineComponent<CinemachineTransposer>();
@@ -87,13 +87,6 @@ namespace Game0
             camOffsetX = camOffsetY  = 0;
 
             cmVCam.m_Lens.FieldOfView = camFOVWithOutZoom = 45;
-        }
-
-        private bool MatchingCharacterPositionAndAim()
-        {
-            return characterAim.position.x == character.transform.position.x
-                && characterAim.position.y == character.transform.position.y + 1.27f
-                && characterAim.position.z == character.transform.position.z;
         }
 
         private void Update()
@@ -133,7 +126,7 @@ namespace Game0
             }
         }
 
-        private void OnPointOnMoveEventHandler(object sender, Vector3 _)
+        private void PointMoveEventHandler(object sender, Vector3 _)
         {
             if (cmVCamTransposer.m_BindingMode != CinemachineTransposer.BindingMode.LockToTargetOnAssign)
             {
@@ -215,10 +208,9 @@ namespace Game0
         {
             switch (context.phase)
             {
-                case InputActionPhase.Started:
-                    break;
-                case InputActionPhase.Performed:
+                case InputActionPhase.Started | InputActionPhase.Performed:
                     cameraZoomValue = context.ReadValue<float>();
+                    
                     break;
                 case InputActionPhase.Canceled:
                     cameraZoomValue = 0;
@@ -269,51 +261,29 @@ namespace Game0
         {
             float speed = 2.5f;
 
-            if (cameraZoomValue > 0)
-            {
-                // With Mathf.Lerp
-                cmVCamOffset.m_Offset.z = Mathf.Lerp(cmVCamOffset.m_Offset.z, camMaxZoom, speed * Time.deltaTime);
-                cmVCamTransposer.m_FollowOffset.y = Mathf.Lerp(cmVCamTransposer.m_FollowOffset.y, camFollowOffsetWithZoom, speed * Time.deltaTime);
-                cmVCam.m_Lens.FieldOfView = Mathf.Lerp(cmVCam.m_Lens.FieldOfView, camFOVWithZoom, speed * Time.deltaTime);
-                yield return null;
+            float cmVCamOffsetYTarget = cameraZoomValue > 0 ? camMaxZoom : 0;
+            float cmVCamTransOffsetYTarget = cameraZoomValue > 0 ? camFollowOffsetWithZoom : camFollowOffsetWithOutZoom;
+            float cmVCamFOVTarget = cameraZoomValue > 0 ? camFOVWithZoom : camFOVWithOutZoom;
 
-                // With Mathf.MoveTowards
-                //while (cinemachineCameraOffset.m_Offset.z < camMaxZoom)
-                //{
-                //    cinemachineCameraOffset.m_Offset.z = Mathf.MoveTowards(cinemachineCameraOffset.m_Offset.z, camMaxZoom, camZoomSpeed * Time.deltaTime);
-                //    CMTransposer.m_FollowOffset.y = Mathf.Lerp(CMTransposer.m_FollowOffset.y, camFollowOffsetWithZoom, camZoomSpeed * Time.deltaTime);
-                //    cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, camFOVWithZoom, camZoomSpeed * Time.deltaTime);
-                //    yield return null;
-                //}
-            }
-            else if (cameraZoomValue < 0)
-            {
+            cmVCamOffset.m_Offset.z = Mathf.Lerp(cmVCamOffset.m_Offset.z, cmVCamOffsetYTarget, Time.deltaTime * speed);
+            cmVCamTransposer.m_FollowOffset.y = Mathf.Lerp(cmVCamTransposer.m_FollowOffset.y, cmVCamTransOffsetYTarget, Time.deltaTime * speed);
+            cmVCam.m_Lens.FieldOfView = Mathf.Lerp(cmVCam.m_Lens.FieldOfView, cmVCamFOVTarget, Time.deltaTime * speed);
 
-                // With Mathf.Lerp
-                cmVCamOffset.m_Offset.z = Mathf.Lerp(cmVCamOffset.m_Offset.z, 0, speed * Time.deltaTime);
-                cmVCamTransposer.m_FollowOffset.y = Mathf.Lerp(cmVCamTransposer.m_FollowOffset.y, camFollowOffsetWithOutZoom, speed * Time.deltaTime);
-                cmVCam.m_Lens.FieldOfView = Mathf.Lerp(cmVCam.m_Lens.FieldOfView, camFOVWithOutZoom, speed * Time.deltaTime);
-                yield return null;
-
-                // With Mathf.MoveTowards
-                //while (cinemachineCameraOffset.m_Offset.z > 0)
-                //{
-                //    cinemachineCameraOffset.m_Offset.z = Mathf.MoveTowards(cinemachineCameraOffset.m_Offset.z, 0, camZoomSpeed * Time.deltaTime);
-                //    CMTransposer.m_FollowOffset.y = Mathf.Lerp(CMTransposer.m_FollowOffset.y, camFollowOffsetWithOutZoom, camZoomSpeed * Time.deltaTime);
-                //    cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, camFOVWithOutZoom, camZoomSpeed * Time.deltaTime);
-                //    yield return null;
-                //}
-            }
+            cameraZoomValue = 0;
+            zoomCameraCorutine = null;
+            yield break;
         }
 
         private IEnumerator SetAimRelativeCharacterCoroutine()
         {
+            print("Yep!");
+
             Vector3 startPosition = characterAim.position;
             Vector3 targetPosition = DefineCharacterAimPosition();
 
             while (startPosition != DefineCharacterAimPosition())
             {
-                characterAim.position = Vector3.MoveTowards(startPosition, targetPosition, 0.1f);
+                characterAim.position = Vector3.MoveTowards(startPosition, targetPosition, 0.25f);
                 startPosition = characterAim.position;
                 targetPosition = DefineCharacterAimPosition();
                 yield return null;
@@ -321,8 +291,6 @@ namespace Game0
             characterAim.position = targetPosition;
             setAimRelativeCharacterCoroutine = null;
             yield break;
-
-
         }
 
         private Vector3 DefineCharacterAimPosition()
