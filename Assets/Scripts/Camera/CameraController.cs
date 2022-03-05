@@ -276,8 +276,6 @@ namespace Game0
 
         private IEnumerator SetAimRelativeCharacterCoroutine()
         {
-            print("Yep!");
-
             Vector3 startPosition = characterAim.position;
             Vector3 targetPosition = DefineCharacterAimPosition();
 

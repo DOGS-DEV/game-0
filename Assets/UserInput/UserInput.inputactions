@@ -6,7 +6,7 @@
             "id": "af446be3-1867-45ec-a879-db642063d013",
             "actions": [
                 {
-                    "name": "OnMouseLeftButtonClick",
+                    "name": "MouseLBClick",
                     "type": "Button",
                     "id": "9b6c6b00-1bce-4f3f-8702-b6ee22c089c4",
                     "expectedControlType": "Button",
@@ -14,26 +14,10 @@
                     "interactions": ""
                 },
                 {
-                    "name": "OnMouseRightButtonClick",
+                    "name": "MouseRBClick",
                     "type": "Button",
                     "id": "7a6379a1-82e1-4261-96fb-91c9f0559036",
                     "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "OnMousePan",
-                    "type": "PassThrough",
-                    "id": "26c15669-cccd-4bbb-9a4d-c217a7e795d6",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "OnMouseZoom",
-                    "type": "PassThrough",
-                    "id": "3350e9b6-166f-479e-a16c-3bc6a978ba0c",
-                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 },
@@ -62,29 +46,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnMouseLeftButtonClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8c4e989b-8ebd-41e4-9309-aca54dfe2860",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OnMousePan",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c008f79d-3d85-4013-8df3-a499886e9f51",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "Normalize(min=-120,max=120)",
-                    "groups": "",
-                    "action": "OnMouseZoom",
+                    "action": "MouseLBClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -95,7 +57,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnMouseRightButtonClick",
+                    "action": "MouseRBClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

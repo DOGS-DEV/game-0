@@ -19,7 +19,7 @@ public class @UserInput : IInputActionCollection, IDisposable
             ""id"": ""af446be3-1867-45ec-a879-db642063d013"",
             ""actions"": [
                 {
-                    ""name"": ""OnMouseLeftButtonClick"",
+                    ""name"": ""MouseLBClick"",
                     ""type"": ""Button"",
                     ""id"": ""9b6c6b00-1bce-4f3f-8702-b6ee22c089c4"",
                     ""expectedControlType"": ""Button"",
@@ -27,26 +27,10 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""OnMouseRightButtonClick"",
+                    ""name"": ""MouseRBClick"",
                     ""type"": ""Button"",
                     ""id"": ""7a6379a1-82e1-4261-96fb-91c9f0559036"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""OnMousePan"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""26c15669-cccd-4bbb-9a4d-c217a7e795d6"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""OnMouseZoom"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""3350e9b6-166f-479e-a16c-3bc6a978ba0c"",
-                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -75,29 +59,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnMouseLeftButtonClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8c4e989b-8ebd-41e4-9309-aca54dfe2860"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""OnMousePan"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c008f79d-3d85-4013-8df3-a499886e9f51"",
-                    ""path"": ""<Mouse>/scroll/y"",
-                    ""interactions"": """",
-                    ""processors"": ""Normalize(min=-120,max=120)"",
-                    ""groups"": """",
-                    ""action"": ""OnMouseZoom"",
+                    ""action"": ""MouseLBClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -108,7 +70,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnMouseRightButtonClick"",
+                    ""action"": ""MouseRBClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -262,10 +224,8 @@ public class @UserInput : IInputActionCollection, IDisposable
 }");
         // PlayerInput
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
-        m_PlayerInput_OnMouseLeftButtonClick = m_PlayerInput.FindAction("OnMouseLeftButtonClick", throwIfNotFound: true);
-        m_PlayerInput_OnMouseRightButtonClick = m_PlayerInput.FindAction("OnMouseRightButtonClick", throwIfNotFound: true);
-        m_PlayerInput_OnMousePan = m_PlayerInput.FindAction("OnMousePan", throwIfNotFound: true);
-        m_PlayerInput_OnMouseZoom = m_PlayerInput.FindAction("OnMouseZoom", throwIfNotFound: true);
+        m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
+        m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
         m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
         m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
     }
@@ -317,20 +277,16 @@ public class @UserInput : IInputActionCollection, IDisposable
     // PlayerInput
     private readonly InputActionMap m_PlayerInput;
     private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
-    private readonly InputAction m_PlayerInput_OnMouseLeftButtonClick;
-    private readonly InputAction m_PlayerInput_OnMouseRightButtonClick;
-    private readonly InputAction m_PlayerInput_OnMousePan;
-    private readonly InputAction m_PlayerInput_OnMouseZoom;
+    private readonly InputAction m_PlayerInput_MouseLBClick;
+    private readonly InputAction m_PlayerInput_MouseRBClick;
     private readonly InputAction m_PlayerInput_CameraPan;
     private readonly InputAction m_PlayerInput_CameraRotation;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
         public PlayerInputActions(@UserInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OnMouseLeftButtonClick => m_Wrapper.m_PlayerInput_OnMouseLeftButtonClick;
-        public InputAction @OnMouseRightButtonClick => m_Wrapper.m_PlayerInput_OnMouseRightButtonClick;
-        public InputAction @OnMousePan => m_Wrapper.m_PlayerInput_OnMousePan;
-        public InputAction @OnMouseZoom => m_Wrapper.m_PlayerInput_OnMouseZoom;
+        public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
+        public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
         public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
@@ -342,18 +298,12 @@ public class @UserInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerInputActionsCallbackInterface != null)
             {
-                @OnMouseLeftButtonClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
-                @OnMouseLeftButtonClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
-                @OnMouseLeftButtonClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseLeftButtonClick;
-                @OnMouseRightButtonClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseRightButtonClick;
-                @OnMouseRightButtonClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseRightButtonClick;
-                @OnMouseRightButtonClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseRightButtonClick;
-                @OnMousePan.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePan;
-                @OnMousePan.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePan;
-                @OnMousePan.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMousePan;
-                @OnMouseZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
-                @OnMouseZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
-                @OnMouseZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnOnMouseZoom;
+                @MouseLBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                @MouseLBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                @MouseLBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                @MouseRBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
+                @MouseRBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
+                @MouseRBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
                 @CameraPan.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
                 @CameraPan.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
                 @CameraPan.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
@@ -364,18 +314,12 @@ public class @UserInput : IInputActionCollection, IDisposable
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @OnMouseLeftButtonClick.started += instance.OnOnMouseLeftButtonClick;
-                @OnMouseLeftButtonClick.performed += instance.OnOnMouseLeftButtonClick;
-                @OnMouseLeftButtonClick.canceled += instance.OnOnMouseLeftButtonClick;
-                @OnMouseRightButtonClick.started += instance.OnOnMouseRightButtonClick;
-                @OnMouseRightButtonClick.performed += instance.OnOnMouseRightButtonClick;
-                @OnMouseRightButtonClick.canceled += instance.OnOnMouseRightButtonClick;
-                @OnMousePan.started += instance.OnOnMousePan;
-                @OnMousePan.performed += instance.OnOnMousePan;
-                @OnMousePan.canceled += instance.OnOnMousePan;
-                @OnMouseZoom.started += instance.OnOnMouseZoom;
-                @OnMouseZoom.performed += instance.OnOnMouseZoom;
-                @OnMouseZoom.canceled += instance.OnOnMouseZoom;
+                @MouseLBClick.started += instance.OnMouseLBClick;
+                @MouseLBClick.performed += instance.OnMouseLBClick;
+                @MouseLBClick.canceled += instance.OnMouseLBClick;
+                @MouseRBClick.started += instance.OnMouseRBClick;
+                @MouseRBClick.performed += instance.OnMouseRBClick;
+                @MouseRBClick.canceled += instance.OnMouseRBClick;
                 @CameraPan.started += instance.OnCameraPan;
                 @CameraPan.performed += instance.OnCameraPan;
                 @CameraPan.canceled += instance.OnCameraPan;
@@ -388,10 +332,8 @@ public class @UserInput : IInputActionCollection, IDisposable
     public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
     public interface IPlayerInputActions
     {
-        void OnOnMouseLeftButtonClick(InputAction.CallbackContext context);
-        void OnOnMouseRightButtonClick(InputAction.CallbackContext context);
-        void OnOnMousePan(InputAction.CallbackContext context);
-        void OnOnMouseZoom(InputAction.CallbackContext context);
+        void OnMouseLBClick(InputAction.CallbackContext context);
+        void OnMouseRBClick(InputAction.CallbackContext context);
         void OnCameraPan(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
     }
