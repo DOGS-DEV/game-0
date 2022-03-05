@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.InputSystem.InputAction;
-using Game0.Interfaces;
 
 namespace Game0
 {
@@ -10,8 +9,6 @@ namespace Game0
     public class CharacterController : MonoBehaviour
     {
         #region Variables and properties
-
-        private IInputable Input { get; set; }
 
         private NavMeshAgent agent;
         public GameObject targetDestination;
@@ -34,10 +31,6 @@ namespace Game0
         #endregion
 
         #region Methods
-        public void Bingding(IInputable input)
-        {
-            Input = input;
-        }
 
         public void OnMouseScreenPosition(CallbackContext context)
         {

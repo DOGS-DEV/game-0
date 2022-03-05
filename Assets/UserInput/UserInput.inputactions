@@ -6,6 +6,14 @@
             "id": "af446be3-1867-45ec-a879-db642063d013",
             "actions": [
                 {
+                    "name": "MousePosition",
+                    "type": "PassThrough",
+                    "id": "b11dc1f9-43c2-4239-b961-53bbfcaddd63",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "MouseLBClick",
                     "type": "Button",
                     "id": "9b6c6b00-1bce-4f3f-8702-b6ee22c089c4",
@@ -203,6 +211,17 @@
                     "action": "CameraRotation",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6eaf7aba-ef49-418e-b51a-b578912c7516",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

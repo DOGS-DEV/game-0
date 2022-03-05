@@ -19,6 +19,14 @@ public class @UserInput : IInputActionCollection, IDisposable
             ""id"": ""af446be3-1867-45ec-a879-db642063d013"",
             ""actions"": [
                 {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b11dc1f9-43c2-4239-b961-53bbfcaddd63"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""MouseLBClick"",
                     ""type"": ""Button"",
                     ""id"": ""9b6c6b00-1bce-4f3f-8702-b6ee22c089c4"",
@@ -216,6 +224,17 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6eaf7aba-ef49-418e-b51a-b578912c7516"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -224,6 +243,7 @@ public class @UserInput : IInputActionCollection, IDisposable
 }");
         // PlayerInput
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
+        m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
         m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
         m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
         m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
@@ -277,6 +297,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     // PlayerInput
     private readonly InputActionMap m_PlayerInput;
     private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
+    private readonly InputAction m_PlayerInput_MousePosition;
     private readonly InputAction m_PlayerInput_MouseLBClick;
     private readonly InputAction m_PlayerInput_MouseRBClick;
     private readonly InputAction m_PlayerInput_CameraPan;
@@ -285,6 +306,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     {
         private @UserInput m_Wrapper;
         public PlayerInputActions(@UserInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
         public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
         public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
         public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
@@ -298,6 +320,9 @@ public class @UserInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerInputActionsCallbackInterface != null)
             {
+                @MousePosition.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
                 @MouseLBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
                 @MouseLBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
                 @MouseLBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
@@ -314,6 +339,9 @@ public class @UserInput : IInputActionCollection, IDisposable
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
                 @MouseLBClick.started += instance.OnMouseLBClick;
                 @MouseLBClick.performed += instance.OnMouseLBClick;
                 @MouseLBClick.canceled += instance.OnMouseLBClick;
@@ -332,6 +360,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
     public interface IPlayerInputActions
     {
+        void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseLBClick(InputAction.CallbackContext context);
         void OnMouseRBClick(InputAction.CallbackContext context);
         void OnCameraPan(InputAction.CallbackContext context);

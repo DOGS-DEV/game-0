@@ -1,18 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NativeCameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Transform focus = default;
+
+    [SerializeField, Range(1f, 20f)] float focusDistance = 5f;
+
+    private void Start()
     {
-        
+        gameObject.transform.localPosition = new Vector3(10, 12, 48);
+        gameObject.transform.eulerAngles = new Vector3(35, -60, 0);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+
+        Vector3 focusPoint = focus.position;
+        Vector3 lookDirection = gameObject.transform.forward;
+        gameObject.transform.position = focusPoint - lookDirection * focusDistance;
+
     }
+
 }
