@@ -57,6 +57,14 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraZoom"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c4cd11d2-7130-413d-a469-05d488e5cec9"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -235,6 +243,17 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b13a0a0b-3bb1-4caf-a41d-8882cad2401d"",
+                    ""path"": ""<Mouse>/position/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +267,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
         m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
         m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
+        m_PlayerInput_CameraZoom = m_PlayerInput.FindAction("CameraZoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -302,6 +322,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_MouseRBClick;
     private readonly InputAction m_PlayerInput_CameraPan;
     private readonly InputAction m_PlayerInput_CameraRotation;
+    private readonly InputAction m_PlayerInput_CameraZoom;
     public struct PlayerInputActions
     {
         private @UserInput m_Wrapper;
@@ -311,6 +332,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
         public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
+        public InputAction @CameraZoom => m_Wrapper.m_PlayerInput_CameraZoom;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -335,6 +357,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                 @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                 @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                @CameraZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                @CameraZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                @CameraZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -354,6 +379,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @CameraRotation.started += instance.OnCameraRotation;
                 @CameraRotation.performed += instance.OnCameraRotation;
                 @CameraRotation.canceled += instance.OnCameraRotation;
+                @CameraZoom.started += instance.OnCameraZoom;
+                @CameraZoom.performed += instance.OnCameraZoom;
+                @CameraZoom.canceled += instance.OnCameraZoom;
             }
         }
     }
@@ -365,5 +393,6 @@ public class @UserInput : IInputActionCollection, IDisposable
         void OnMouseRBClick(InputAction.CallbackContext context);
         void OnCameraPan(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnCameraZoom(InputAction.CallbackContext context);
     }
 }
