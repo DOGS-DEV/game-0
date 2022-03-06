@@ -14,7 +14,6 @@ namespace Game0
         public GameObject targetDestination;
         public LayerMask whatCanBeClickedOn;
         [SerializeField, Range(10.0f,100.0f)] private float allowableClickDistance = 50f;
-       // private bool leftButtonMouseClick = false;
         private Vector2 mouseScreenPosion = Vector2.zero;
         private RaycastHit hitInfo;
 
@@ -29,11 +28,10 @@ namespace Game0
             agent.updatePosition = false;
         }
 
-        private void Update() {}
-
         #endregion
 
         #region Methods
+
         public void OnMouseScreenPosition(CallbackContext context)
         {
             if (context.performed)

@@ -6,7 +6,15 @@
             "id": "af446be3-1867-45ec-a879-db642063d013",
             "actions": [
                 {
-                    "name": "OnMouseLeftButtonClick",
+                    "name": "MousePosition",
+                    "type": "PassThrough",
+                    "id": "b11dc1f9-43c2-4239-b961-53bbfcaddd63",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MouseLBClick",
                     "type": "Button",
                     "id": "9b6c6b00-1bce-4f3f-8702-b6ee22c089c4",
                     "expectedControlType": "Button",
@@ -14,26 +22,10 @@
                     "interactions": ""
                 },
                 {
-                    "name": "OnMouseRightButtonClick",
+                    "name": "MouseRBClick",
                     "type": "Button",
                     "id": "7a6379a1-82e1-4261-96fb-91c9f0559036",
                     "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "OnMousePan",
-                    "type": "PassThrough",
-                    "id": "26c15669-cccd-4bbb-9a4d-c217a7e795d6",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "OnMouseZoom",
-                    "type": "PassThrough",
-                    "id": "3350e9b6-166f-479e-a16c-3bc6a978ba0c",
-                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 },
@@ -52,6 +44,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "CameraZoom",
+                    "type": "PassThrough",
+                    "id": "c4cd11d2-7130-413d-a469-05d488e5cec9",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -62,29 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnMouseLeftButtonClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8c4e989b-8ebd-41e4-9309-aca54dfe2860",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OnMousePan",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c008f79d-3d85-4013-8df3-a499886e9f51",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "Normalize(min=-120,max=120)",
-                    "groups": "",
-                    "action": "OnMouseZoom",
+                    "action": "MouseLBClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -95,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnMouseRightButtonClick",
+                    "action": "MouseRBClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -239,6 +217,61 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6eaf7aba-ef49-418e-b51a-b578912c7516",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b13a0a0b-3bb1-4caf-a41d-8882cad2401d",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraZoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Keys",
+                    "id": "6d2d5d29-601a-40b5-80c3-81eb833f6538",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraZoom",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "33acc8d8-69ac-4ad5-83bc-d65eff4d4c73",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraZoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "704992fa-877f-4ced-9972-5c2083a5f812",
+                    "path": "<Keyboard>/equals",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraZoom",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
