@@ -7,30 +7,21 @@ namespace Game0
 {
     public class NativeCameraController : MonoBehaviour
     {
-        /// <summary>Position of character space.</summary>
         [SerializeField] Transform character;
-        /// <summary>Target tracking camera.</summary>
         [SerializeField] Transform focus = default;
         Vector3 focusPoint;
+        private float offsetFocusY = 1.27f;
         private Coroutine setFocusRelativeCharacterCoroutine;
 
-        private float offsetFocusY = 1.27f;
-
-        /// <summary> Camera distance from target.</summary>
         [SerializeField, Range(10f, 20f), Tooltip("Дистанция от камеры от цели")]
         float focusDistance;
 
-        /// <summary>Tolerance at which camera does not track target.</summary>
         [SerializeField, Min(0f), Tooltip("Мертвая зона камеры вокруг персонажа")]
         float focusRadius;
 
-        /// <summary>Camera centering factor.</summary>
         [SerializeField, Range(0f, 1f), Tooltip("Скорость остановки камеры после перемещения")]
         float focusCentering = 0.5f;
 
-        // ----
-        //private bool isKeysHoldToPan = false;
-        /// <summary>Camera pan radius relative to the character.</summary>
         [SerializeField, Range(5, 50), Tooltip("Радиус панарамирования камеры относительно персонажа")]
         private float camPanRadius;
         [SerializeField, Range(0.05f, 0.5f), Tooltip("Скорость панарамирования камеры")]
@@ -38,8 +29,13 @@ namespace Game0
         private Vector3 camPanVector;
         private Coroutine camPanCoroutine;
 
+        [SerializeField, Range(5, 20), Tooltip("Скорость вращения камеры")]
+        private float camRotationSpeed;
+        private bool isKeyPressedToRotate;
+        private float camRotateDirection;
+        private Coroutine camRotationCoroutine;
+
         float camZoomSpeed;
-        float rotationSpeed;
 
         float maxHeight;
         float minHeight;
@@ -60,8 +56,6 @@ namespace Game0
 
         private void Start()
         {
-           
-
             focusDistance = 20.0f;
             focusRadius = 2.0f; // DeadZone
             focusCentering = 0.75f;
@@ -69,6 +63,10 @@ namespace Game0
             camPanVector = Vector3.zero;
             camPanSpeed = 0.15f;
             camPanRadius = 15.0f;
+
+            isKeyPressedToRotate = false;
+            camRotationSpeed = 10;
+            camRotateDirection = 0;
         }
 
         private void Update()
@@ -76,6 +74,11 @@ namespace Game0
             if (camPanVector != Vector3.zero)
             {
                 camPanCoroutine = StartCoroutine(CamPanCoroutine());
+            }
+
+            if (camRotateDirection != 0)
+            {
+                camRotationCoroutine = StartCoroutine(CamRotateCoroutine());
             }
         }
 
@@ -143,7 +146,8 @@ namespace Game0
 
         public void OnCameraRotateHandler(CallbackContext context)
         {
-
+            isKeyPressedToRotate = context.phase == Started | context.phase == Performed ? true : false;
+            camRotateDirection = context.phase == Started | context.phase == Performed ? context.ReadValue<float>() : 0;
         }
 
         public void OnCameraZoomHandler(CallbackContext context)
@@ -174,6 +178,22 @@ namespace Game0
             camPanCoroutine = null;
             yield break;
         }
+
+        private IEnumerator CamRotateCoroutine()
+        {
+            while (isKeyPressedToRotate)
+            {
+                Vector3 rotateDirection = camRotateDirection == 1 ? -Vector3.up : Vector3.up;
+
+                transform.RotateAround(focus.position, rotateDirection, camRotationSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            camRotationCoroutine = null;
+            yield break;
+        }
+
+
 
         private IEnumerator SetFocusRelativeCharacterCoroutine()
         {
