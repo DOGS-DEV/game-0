@@ -1,87 +1,206 @@
+using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
+using static UnityEngine.InputSystem.InputActionPhase;
 
-public class NativeCameraController : MonoBehaviour
+namespace Game0
 {
-    /// <summary>Target tracking camera.</summary>
-    [SerializeField] Transform focus = default;
-    Vector3 focusPoint;
-
-    /// <summary> Camera distance from target.</summary>
-    [SerializeField, Range(10f, 20f), Tooltip("Дистанция камеры от цели")]
-    float focusDistance;
-
-    /// <summary>Tolerance at which camera does not track target.</summary>
-    [SerializeField, Min(0f), Tooltip("Мертвая зона камеры вокруг персонажа")]
-    float focusRadius;
-
-    /// <summary>Camera centering factor.</summary>
-    [SerializeField, Range(0f, 1f), Tooltip("Скорость остановки камеры после перемещения")]
-    float focusCentering = 0.5f;
-
-    private void Awake()
+    public class NativeCameraController : MonoBehaviour
     {
-        focusPoint = focus.position;
-    }
+        /// <summary>Position of character space.</summary>
+        [SerializeField] Transform character;
+        /// <summary>Target tracking camera.</summary>
+        [SerializeField] Transform focus = default;
+        Vector3 focusPoint;
+        private Coroutine setFocusRelativeCharacterCoroutine;
 
-    private void Start()
-    {
-        gameObject.transform.localPosition = new Vector3(10, 12, 48);
-        gameObject.transform.eulerAngles = new Vector3(35, -60, 0);
+        private float offsetFocusY = 1.27f;
 
-        focusDistance = 20.0f;
-        focusRadius = 2.0f; // DeadZone
-        focusCentering = 0.75f;
-    }
+        /// <summary> Camera distance from target.</summary>
+        [SerializeField, Range(10f, 20f), Tooltip("Дистанция от камеры от цели")]
+        float focusDistance;
 
-    private void LateUpdate()
-    {
-        UpdateFocusPoint();
-        Vector3 lookDirection = gameObject.transform.forward;
-        gameObject.transform.position = focusPoint - lookDirection * focusDistance;
-    }
+        /// <summary>Tolerance at which camera does not track target.</summary>
+        [SerializeField, Min(0f), Tooltip("Мертвая зона камеры вокруг персонажа")]
+        float focusRadius;
 
-    void UpdateFocusPoint()
-    {
-        Vector3 targetPoint = focus.position;
-        if (focusRadius > 0f)
+        /// <summary>Camera centering factor.</summary>
+        [SerializeField, Range(0f, 1f), Tooltip("Скорость остановки камеры после перемещения")]
+        float focusCentering = 0.5f;
+
+        // ----
+        //private bool isKeysHoldToPan = false;
+        /// <summary>Camera pan radius relative to the character.</summary>
+        [SerializeField, Range(5, 50), Tooltip("Радиус панарамирования камеры относительно персонажа")]
+        private float camPanRadius;
+        [SerializeField, Range(0.05f, 0.5f), Tooltip("Скорость панарамирования камеры")]
+        float camPanSpeed = default;
+        private Vector3 camPanVector;
+        private Coroutine camPanCoroutine;
+
+        float camZoomSpeed;
+        float rotationSpeed;
+
+        float maxHeight;
+        float minHeight;
+
+        private void Awake()
         {
-            float distance = Vector3.Distance(targetPoint, focusPoint);
-            float t = 1f;
-            if (distance > 0.01f && focusCentering > 0f)
+            focusPoint = focus.position;
+
+            gameObject.transform.localPosition = new Vector3(10, 12, 48);
+            gameObject.transform.eulerAngles = new Vector3(35, -60, 0);
+
+            CharacterController characterController = character.parent.GetComponent<CharacterController>();
+            if (characterController != null)
             {
-                t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
+                characterController.PointOnMoveEvent += PointMoveEventHandler;
+            }
+        }
+
+        private void Start()
+        {
+           
+
+            focusDistance = 20.0f;
+            focusRadius = 2.0f; // DeadZone
+            focusCentering = 0.75f;
+
+            camPanVector = Vector3.zero;
+            camPanSpeed = 0.15f;
+            camPanRadius = 15.0f;
+        }
+
+        private void Update()
+        {
+            if (camPanVector != Vector3.zero)
+            {
+                camPanCoroutine = StartCoroutine(CamPanCoroutine());
+            }
+        }
+
+        private void LateUpdate()
+        {
+            UpdateFocusPoint();
+            Vector3 lookDirection = gameObject.transform.forward;
+            gameObject.transform.position = focusPoint - lookDirection * focusDistance;
+        }
+
+        void UpdateFocusPoint()
+        {
+            Vector3 targetPoint = focus.position;
+            if (focusRadius > 0f)
+            {
+                float distance = Vector3.Distance(targetPoint, focusPoint);
+                float t = 1f;
+                if (distance > 0.01f && focusCentering > 0f)
+                {
+                    t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
+                }
+
+                if (distance > focusRadius)
+                {
+                    t = Mathf.Min(t, focusRadius / distance);
+                }
+                focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+            }
+            else
+            {
+                focusPoint = targetPoint;
+            }
+        }
+
+        private void PointMoveEventHandler(object sender, Vector3 _)
+        {
+            setFocusRelativeCharacterCoroutine = StartCoroutine(SetFocusRelativeCharacterCoroutine());
+        }
+
+        public void OnCameraPanHandler(CallbackContext context)
+        {
+            switch (context.phase)
+            {
+                case Performed:
+                    Vector2 destination = context.ReadValue<Vector2>();
+
+                    float hsp = camPanSpeed * destination.x;
+                    float vsp = camPanSpeed * destination.y;
+
+                    Vector3 lateralMove = hsp * transform.right;
+                    Vector3 forwardMove = transform.forward;
+
+                    forwardMove.y = 0;
+                    forwardMove.Normalize();
+                    forwardMove *= vsp;
+
+                    camPanVector = lateralMove + forwardMove;
+
+                    break;
+                default:
+                    camPanVector = Vector3.zero;
+                    break;
+            }
+        }
+
+        public void OnCameraRotateHandler(CallbackContext context)
+        {
+
+        }
+
+        public void OnCameraZoomHandler(CallbackContext context)
+        {
+            switch (context.phase)
+            {
+                case Performed:
+                    //float zooming = context.ReadValue<float>();
+                    //float zoomSp = -camZoomSpeed * zooming;
+
+                    break;
+                default:
+                    break;
             }
 
-            if (distance > focusRadius)
+        }
+
+        private IEnumerator CamPanCoroutine()
+        {
+            Vector3 endPosition = focus.position + camPanVector;
+
+            float distance = Vector3.Distance(character.transform.position, endPosition);
+
+            if (distance < camPanRadius)
             {
-                t = Mathf.Min(t, focusRadius / distance);
+                focus.position += camPanVector;
             }
-            focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+            camPanCoroutine = null;
+            yield break;
         }
-        else
+
+        private IEnumerator SetFocusRelativeCharacterCoroutine()
         {
-            focusPoint = targetPoint;
+            Vector3 startPosition = focus.position;
+            Vector3 targetPosition = DefineFocusPosition();
+
+            while (startPosition != targetPosition)
+            {
+                focus.position = Vector3.MoveTowards(startPosition, targetPosition, 0.1f);
+                startPosition = focus.position;
+                targetPosition = DefineFocusPosition();
+                yield return null;
+            }
+            focus.position = targetPosition;
+            setFocusRelativeCharacterCoroutine = null;
+            yield break;
         }
-    }
 
-    public void OnCameraPanHandler(CallbackContext context)
-    {
-
-    }
-
-    public void OnCameraRotateHandler(CallbackContext context)
-    {
-
-    }
-
-    public void OnCameraZoomHandler(CallbackContext context)
-    {
-        if (context.started | context.performed)
+        private Vector3 DefineFocusPosition()
         {
-            var aa = context.ReadValue<float>();
-            print(aa);
+            return new Vector3(
+                character.position.x,
+                character.position.y + offsetFocusY,
+                character.position.z
+            );
         }
     }
-
 }
+
+

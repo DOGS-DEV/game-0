@@ -247,7 +247,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b13a0a0b-3bb1-4caf-a41d-8882cad2401d"",
-                    ""path"": ""<Mouse>/position/y"",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

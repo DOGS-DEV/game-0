@@ -16364,6 +16364,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c4cd11d2-7130-413d-a469-05d488e5cec9
     m_ActionName: PlayerInput/CameraZoom[/Mouse/position/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 963194229}
+        m_TargetAssemblyTypeName: NativeCameraController, Assembly-CSharp
+        m_MethodName: OnMouseDeltaHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8da37283-8e9c-4656-b375-eee33f8fe776
+    m_ActionName: PlayerInput/MouseDelta[/Mouse/delta/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerInput
@@ -30789,26 +30805,6 @@ MonoBehaviour:
     m_ActionId: 7a6379a1-82e1-4261-96fb-91c9f0559036
     m_ActionName: PlayerInput/OnMouseRightButtonClick[/Mouse/rightButton]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 26c15669-cccd-4bbb-9a4d-c217a7e795d6
-    m_ActionName: PlayerInput/OnMousePan[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
-        m_MethodName: OnCameraZoomChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 3350e9b6-166f-479e-a16c-3bc6a978ba0c
-    m_ActionName: PlayerInput/OnMouseZoom[/Mouse/scroll/y]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Game0.CameraController, Assembly-CSharp
@@ -30840,6 +30836,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bce85139-affb-4f22-8c82-aa753a25b2db
     m_ActionName: PlayerInput/CameraRotation[/Keyboard/q,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b11dc1f9-43c2-4239-b961-53bbfcaddd63
+    m_ActionName: PlayerInput/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c4cd11d2-7130-413d-a469-05d488e5cec9
+    m_ActionName: PlayerInput/CameraZoom[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8da37283-8e9c-4656-b375-eee33f8fe776
+    m_ActionName: PlayerInput/MouseDelta[/Mouse/delta/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerInput
