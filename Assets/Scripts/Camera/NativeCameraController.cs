@@ -7,13 +7,21 @@ namespace Game0
 {
     public class NativeCameraController : MonoBehaviour
     {
+        #region Variables and constants
+
+        private const float CAM_MIN_FOV = 45f;
+        private const float CAM_MAX_FOV = 60f;
+
         [SerializeField] Transform character;
         [SerializeField] Transform focus = default;
         Vector3 focusPoint;
         private float offsetFocusY = 1.27f;
         private Coroutine setFocusRelativeCharacterCoroutine;
 
-        [SerializeField, Range(10f, 20f), Tooltip("Дистанция от камеры от цели")]
+        private const float FOCUS_MIN_DISTANCE = 8f;
+        private const float FOCUS_MAX_DISTANCE = 20f;
+
+        [SerializeField, Range(FOCUS_MIN_DISTANCE, FOCUS_MAX_DISTANCE), Tooltip("Дистанция от камеры от цели")]
         float focusDistance;
 
         [SerializeField, Min(0f), Tooltip("Мертвая зона камеры вокруг персонажа")]
@@ -30,22 +38,29 @@ namespace Game0
         private Coroutine camPanCoroutine;
 
         [SerializeField, Range(5, 20), Tooltip("Скорость вращения камеры")]
+        private const float MIN_CAM_ROTATE_X = 25.0f;
+        private const float MAX_CAM_ROTATE_X = 35.0f;
+
         private float camRotationSpeed;
         private bool isKeyPressedToRotate;
         private float camRotateDirection;
         private Coroutine camRotationCoroutine;
 
-        float camZoomSpeed;
+        float camCurrentZooming;
+        [SerializeField, Range(0.1f, 3.0f), Tooltip("Скорость зума камеры")]
+        float camZoomChangeAmount;
+        private Coroutine camZoomCoroutine;
 
-        float maxHeight;
-        float minHeight;
+        #endregion
+
+        #region Method
 
         private void Awake()
         {
             focusPoint = focus.position;
 
             gameObject.transform.localPosition = new Vector3(10, 12, 48);
-            gameObject.transform.eulerAngles = new Vector3(35, -60, 0);
+            gameObject.transform.eulerAngles = new Vector3(MAX_CAM_ROTATE_X, -60, 0);
 
             CharacterController characterController = character.parent.GetComponent<CharacterController>();
             if (characterController != null)
@@ -56,7 +71,7 @@ namespace Game0
 
         private void Start()
         {
-            focusDistance = 20.0f;
+            focusDistance = FOCUS_MAX_DISTANCE;
             focusRadius = 2.0f; // DeadZone
             focusCentering = 0.75f;
 
@@ -67,6 +82,9 @@ namespace Game0
             isKeyPressedToRotate = false;
             camRotationSpeed = 10;
             camRotateDirection = 0;
+
+            camCurrentZooming = 0;
+            camZoomChangeAmount = 3f;
         }
 
         private void Update()
@@ -80,6 +98,11 @@ namespace Game0
             {
                 camRotationCoroutine = StartCoroutine(CamRotateCoroutine());
             }
+
+            if (camCurrentZooming != 0)
+            {
+                camZoomCoroutine = StartCoroutine(CamZoomCoroutine());
+            }
         }
 
         private void LateUpdate()
@@ -89,29 +112,9 @@ namespace Game0
             gameObject.transform.position = focusPoint - lookDirection * focusDistance;
         }
 
-        void UpdateFocusPoint()
-        {
-            Vector3 targetPoint = focus.position;
-            if (focusRadius > 0f)
-            {
-                float distance = Vector3.Distance(targetPoint, focusPoint);
-                float t = 1f;
-                if (distance > 0.01f && focusCentering > 0f)
-                {
-                    t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
-                }
+        #endregion
 
-                if (distance > focusRadius)
-                {
-                    t = Mathf.Min(t, focusRadius / distance);
-                }
-                focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
-            }
-            else
-            {
-                focusPoint = targetPoint;
-            }
-        }
+        #region Event handlers
 
         private void PointMoveEventHandler(object sender, Vector3 _)
         {
@@ -152,18 +155,12 @@ namespace Game0
 
         public void OnCameraZoomHandler(CallbackContext context)
         {
-            switch (context.phase)
-            {
-                case Performed:
-                    //float zooming = context.ReadValue<float>();
-                    //float zoomSp = -camZoomSpeed * zooming;
-
-                    break;
-                default:
-                    break;
-            }
-
+            camCurrentZooming = context.phase == Performed ? context.ReadValue<float>() : 0;
         }
+
+        #endregion
+
+        #region Coroutines
 
         private IEnumerator CamPanCoroutine()
         {
@@ -193,7 +190,42 @@ namespace Game0
             yield break;
         }
 
+        private IEnumerator CamZoomCoroutine()
+        {
+            Vector3 targetRotation;
 
+            float step = 0.01f;
+
+            if (camCurrentZooming < 0)
+            { 
+                targetRotation = new Vector3(MAX_CAM_ROTATE_X, transform.eulerAngles.y, transform.eulerAngles.z);
+
+                while (focusDistance < FOCUS_MAX_DISTANCE)
+                {
+                    focusDistance = Mathf.Lerp(focusDistance, focusDistance + camZoomChangeAmount, step);
+                    transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, targetRotation, step);
+                    Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, CAM_MIN_FOV, step);
+
+                    yield return null;
+                }
+
+            }
+            else if (camCurrentZooming > 0)
+            {
+                targetRotation = new Vector3(MIN_CAM_ROTATE_X, transform.eulerAngles.y, transform.eulerAngles.z);
+
+                while (focusDistance > FOCUS_MIN_DISTANCE)
+                {
+                    focusDistance = Mathf.Lerp(focusDistance, focusDistance - camZoomChangeAmount, step);
+                    transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, targetRotation, step);
+                    Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, CAM_MAX_FOV, step);
+                    yield return null;
+                }
+            }
+
+            camZoomCoroutine = null;
+            yield break;
+        }
 
         private IEnumerator SetFocusRelativeCharacterCoroutine()
         {
@@ -212,6 +244,34 @@ namespace Game0
             yield break;
         }
 
+        #endregion
+
+        #region Other methods
+
+        void UpdateFocusPoint()
+        {
+            Vector3 targetPoint = focus.position;
+            if (focusRadius > 0f)
+            {
+                float distance = Vector3.Distance(targetPoint, focusPoint);
+                float t = 1f;
+                if (distance > 0.01f && focusCentering > 0f)
+                {
+                    t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
+                }
+
+                if (distance > focusRadius)
+                {
+                    t = Mathf.Min(t, focusRadius / distance);
+                }
+                focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+            }
+            else
+            {
+                focusPoint = targetPoint;
+            }
+        }
+
         private Vector3 DefineFocusPosition()
         {
             return new Vector3(
@@ -220,7 +280,7 @@ namespace Game0
                 character.position.z
             );
         }
+
+        #endregion
     }
 }
-
-
