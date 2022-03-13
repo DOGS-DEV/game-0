@@ -16278,7 +16278,7 @@ MonoBehaviour:
   character: {fileID: 762681422}
   focus: {fileID: 615639938}
   focusDistance: 20
-  focusRadius: 3
+  focusRadius: 1
   focusCentering: 0.5
   camPanRadius: 0
   camPanSpeed: 0
