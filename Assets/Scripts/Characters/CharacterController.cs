@@ -14,7 +14,7 @@ namespace Game0
         public GameObject targetDestination;
         public LayerMask whatCanBeClickedOn;
         [SerializeField, Range(10.0f,100.0f)] private float allowableClickDistance = 50f;
-        private Vector2 mouseScreenPosion = Vector2.zero;
+        private Vector2 mouseScreenPosition = Vector2.zero;
         private RaycastHit hitInfo;
 
         public event EventHandler<Vector3> PointOnMoveEvent;
@@ -36,7 +36,7 @@ namespace Game0
         {
             if (context.performed)
             {
-                mouseScreenPosion = context.ReadValue<Vector2>();
+                mouseScreenPosition = context.ReadValue<Vector2>();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Game0
         {
             if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
             {
-                Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosion);
+                Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
                 if (Physics.Raycast(ray, out hitInfo, allowableClickDistance, whatCanBeClickedOn))
                 {
                     targetDestination.transform.position = hitInfo.point;
@@ -52,6 +52,8 @@ namespace Game0
                     PointOnMoveEvent?.Invoke(this, hitInfo.point);
 
                     agent.SetDestination(hitInfo.point);
+
+                    print(hitInfo.point);
                 }
             }
             //leftButtonMouseClick = context.performed ? true : false;
