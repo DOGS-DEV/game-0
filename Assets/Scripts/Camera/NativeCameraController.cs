@@ -13,7 +13,7 @@ namespace Game0
         private const float CAM_MAX_FOV = 60f;
 
         [SerializeField] Transform character;
-        [SerializeField] Transform focus = default;
+        [SerializeField] Transform aim = default;
         Vector3 focusPoint;
         private float offsetFocusY = 1.27f;
         private Coroutine setFocusRelativeCharacterCoroutine;
@@ -57,10 +57,10 @@ namespace Game0
 
         private void Awake()
         {
-            focusPoint = focus.position;
+            focusPoint = aim.position;
 
-            gameObject.transform.localPosition = new Vector3(10, 12, 48);
-            gameObject.transform.eulerAngles = new Vector3(MAX_CAM_ROTATE_X, -60, 0);
+            gameObject.transform.localPosition = new Vector3(6, 10, 54);
+            gameObject.transform.eulerAngles = new Vector3(MAX_CAM_ROTATE_X, 18.5f, 0);
 
             CharacterController characterController = character.parent.GetComponent<CharacterController>();
             if (characterController != null)
@@ -164,13 +164,13 @@ namespace Game0
 
         private IEnumerator CamPanCoroutine()
         {
-            Vector3 endPosition = focus.position + camPanVector;
+            Vector3 endPosition = aim.position + camPanVector;
 
             float distance = Vector3.Distance(character.transform.position, endPosition);
 
             if (distance < camPanRadius)
             {
-                focus.position += camPanVector;
+                aim.position += camPanVector;
             }
             camPanCoroutine = null;
             yield break;
@@ -182,7 +182,7 @@ namespace Game0
             {
                 Vector3 rotateDirection = camRotateDirection == 1 ? -Vector3.up : Vector3.up;
 
-                transform.RotateAround(focus.position, rotateDirection, camRotationSpeed * Time.deltaTime);
+                transform.RotateAround(aim.position, rotateDirection, camRotationSpeed * Time.deltaTime);
                 yield return null;
             }
 
@@ -229,17 +229,17 @@ namespace Game0
 
         private IEnumerator SetFocusRelativeCharacterCoroutine()
         {
-            Vector3 startPosition = focus.position;
+            Vector3 startPosition = aim.position;
             Vector3 targetPosition = DefineFocusPosition();
 
             while (startPosition != targetPosition)
             {
-                focus.position = Vector3.MoveTowards(startPosition, targetPosition, 0.1f);
-                startPosition = focus.position;
+                aim.position = Vector3.MoveTowards(startPosition, targetPosition, 0.1f);
+                startPosition = aim.position;
                 targetPosition = DefineFocusPosition();
                 yield return null;
             }
-            focus.position = targetPosition;
+            aim.position = targetPosition;
             setFocusRelativeCharacterCoroutine = null;
             yield break;
         }
@@ -250,7 +250,7 @@ namespace Game0
 
         void UpdateFocusPoint()
         {
-            Vector3 targetPoint = focus.position;
+            Vector3 targetPoint = aim.position;
             if (focusRadius > 0f)
             {
                 float distance = Vector3.Distance(targetPoint, focusPoint);
