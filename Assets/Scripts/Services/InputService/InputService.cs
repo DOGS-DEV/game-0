@@ -20,12 +20,12 @@ namespace Game0 {
 
         private void Subscribe()
         {
-            //this.inputs.PlayerInput.Moving.performed += Moving;
+            this.inputs.PlayerInput.Moving.performed += Moving;
         }
 
         private void Unsubscribe()
         {
-            //this.inputs.PlayerInput.Moving.performed -= Moving;
+            this.inputs.PlayerInput.Moving.performed -= Moving;
         }
 
         private void Moving(CallbackContext context) {

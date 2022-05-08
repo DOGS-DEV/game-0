@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e6589720da476459dc6dd71624b071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: d7590ffb3c78b42debc2cfae31e0e953, type: 2}
   _monoInstallers:
   - {fileID: 5760326931430392156}
   _installerPrefabs: []
@@ -74,4 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroPrefab: {fileID: 3519977820495509059, guid: 77f3ab578b60749b0b1179e7dd6c97fd, type: 3}
-  cameraPrefab: {fileID: 8441213455544583982, guid: 4f30b9f4985994bd9a9d5d31df65b90e, type: 3}
+  cameraPrefab: {fileID: 4069497576544862468, guid: 4f30b9f4985994bd9a9d5d31df65b90e, type: 3}

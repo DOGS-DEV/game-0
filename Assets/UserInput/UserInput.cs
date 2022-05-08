@@ -43,7 +43,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""CameraPan"",
+                    ""name"": ""Moving"",
                     ""type"": ""Button"",
                     ""id"": ""ac61d8af-1a7c-4fec-9813-647f3eebf8e6"",
                     ""expectedControlType"": ""Button"",
@@ -97,7 +97,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -108,7 +108,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -119,7 +119,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -130,7 +130,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -141,7 +141,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -152,7 +152,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -163,7 +163,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -174,7 +174,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -185,7 +185,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -196,7 +196,7 @@ public class @UserInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CameraPan"",
+                    ""action"": ""Moving"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -298,7 +298,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
         m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
         m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
-        m_PlayerInput_CameraPan = m_PlayerInput.FindAction("CameraPan", throwIfNotFound: true);
+        m_PlayerInput_Moving = m_PlayerInput.FindAction("Moving", throwIfNotFound: true);
         m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
         m_PlayerInput_CameraZoom = m_PlayerInput.FindAction("CameraZoom", throwIfNotFound: true);
     }
@@ -353,7 +353,7 @@ public class @UserInput : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_MousePosition;
     private readonly InputAction m_PlayerInput_MouseLBClick;
     private readonly InputAction m_PlayerInput_MouseRBClick;
-    private readonly InputAction m_PlayerInput_CameraPan;
+    private readonly InputAction m_PlayerInput_Moving;
     private readonly InputAction m_PlayerInput_CameraRotation;
     private readonly InputAction m_PlayerInput_CameraZoom;
     public struct PlayerInputActions
@@ -363,7 +363,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
         public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
         public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
-        public InputAction @CameraPan => m_Wrapper.m_PlayerInput_CameraPan;
+        public InputAction @Moving => m_Wrapper.m_PlayerInput_Moving;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
         public InputAction @CameraZoom => m_Wrapper.m_PlayerInput_CameraZoom;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
@@ -384,9 +384,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @MouseRBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
                 @MouseRBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
                 @MouseRBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
-                @CameraPan.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
-                @CameraPan.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
-                @CameraPan.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraPan;
+                @Moving.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                @Moving.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                @Moving.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
                 @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                 @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                 @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
@@ -406,9 +406,9 @@ public class @UserInput : IInputActionCollection, IDisposable
                 @MouseRBClick.started += instance.OnMouseRBClick;
                 @MouseRBClick.performed += instance.OnMouseRBClick;
                 @MouseRBClick.canceled += instance.OnMouseRBClick;
-                @CameraPan.started += instance.OnCameraPan;
-                @CameraPan.performed += instance.OnCameraPan;
-                @CameraPan.canceled += instance.OnCameraPan;
+                @Moving.started += instance.OnMoving;
+                @Moving.performed += instance.OnMoving;
+                @Moving.canceled += instance.OnMoving;
                 @CameraRotation.started += instance.OnCameraRotation;
                 @CameraRotation.performed += instance.OnCameraRotation;
                 @CameraRotation.canceled += instance.OnCameraRotation;
@@ -424,7 +424,7 @@ public class @UserInput : IInputActionCollection, IDisposable
         void OnMousePosition(InputAction.CallbackContext context);
         void OnMouseLBClick(InputAction.CallbackContext context);
         void OnMouseRBClick(InputAction.CallbackContext context);
-        void OnCameraPan(InputAction.CallbackContext context);
+        void OnMoving(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
     }

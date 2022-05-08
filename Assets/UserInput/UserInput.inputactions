@@ -30,7 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "CameraPan",
+                    "name": "Moving",
                     "type": "Button",
                     "id": "ac61d8af-1a7c-4fec-9813-647f3eebf8e6",
                     "expectedControlType": "Button",
@@ -84,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -95,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -106,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -117,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -128,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -139,7 +139,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -150,7 +150,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -161,7 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -172,7 +172,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -183,7 +183,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraPan",
+                    "action": "Moving",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
