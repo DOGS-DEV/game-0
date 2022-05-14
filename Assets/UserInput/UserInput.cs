@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public class @UserInput : IInputActionCollection, IDisposable
+namespace Game0
 {
-    public InputActionAsset asset { get; }
-    public @UserInput()
+    public class @UserInput : IInputActionCollection, IDisposable
     {
-        asset = InputActionAsset.FromJson(@"{
+        public InputActionAsset asset { get; }
+        public @UserInput()
+        {
+            asset = InputActionAsset.FromJson(@"{
     ""name"": ""UserInput"",
     ""maps"": [
         {
@@ -293,139 +295,140 @@ public class @UserInput : IInputActionCollection, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // PlayerInput
-        m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
-        m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
-        m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
-        m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
-        m_PlayerInput_Moving = m_PlayerInput.FindAction("Moving", throwIfNotFound: true);
-        m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
-        m_PlayerInput_CameraZoom = m_PlayerInput.FindAction("CameraZoom", throwIfNotFound: true);
-    }
+            // PlayerInput
+            m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
+            m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
+            m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
+            m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
+            m_PlayerInput_Moving = m_PlayerInput.FindAction("Moving", throwIfNotFound: true);
+            m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
+            m_PlayerInput_CameraZoom = m_PlayerInput.FindAction("CameraZoom", throwIfNotFound: true);
+        }
 
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
-
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
-
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
-
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
-
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Enable()
-    {
-        asset.Enable();
-    }
-
-    public void Disable()
-    {
-        asset.Disable();
-    }
-
-    // PlayerInput
-    private readonly InputActionMap m_PlayerInput;
-    private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
-    private readonly InputAction m_PlayerInput_MousePosition;
-    private readonly InputAction m_PlayerInput_MouseLBClick;
-    private readonly InputAction m_PlayerInput_MouseRBClick;
-    private readonly InputAction m_PlayerInput_Moving;
-    private readonly InputAction m_PlayerInput_CameraRotation;
-    private readonly InputAction m_PlayerInput_CameraZoom;
-    public struct PlayerInputActions
-    {
-        private @UserInput m_Wrapper;
-        public PlayerInputActions(@UserInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
-        public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
-        public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
-        public InputAction @Moving => m_Wrapper.m_PlayerInput_Moving;
-        public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
-        public InputAction @CameraZoom => m_Wrapper.m_PlayerInput_CameraZoom;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerInputActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerInputActions instance)
+        public void Dispose()
         {
-            if (m_Wrapper.m_PlayerInputActionsCallbackInterface != null)
+            UnityEngine.Object.Destroy(asset);
+        }
+
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
+
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
+
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
+
+        // PlayerInput
+        private readonly InputActionMap m_PlayerInput;
+        private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
+        private readonly InputAction m_PlayerInput_MousePosition;
+        private readonly InputAction m_PlayerInput_MouseLBClick;
+        private readonly InputAction m_PlayerInput_MouseRBClick;
+        private readonly InputAction m_PlayerInput_Moving;
+        private readonly InputAction m_PlayerInput_CameraRotation;
+        private readonly InputAction m_PlayerInput_CameraZoom;
+        public struct PlayerInputActions
+        {
+            private @UserInput m_Wrapper;
+            public PlayerInputActions(@UserInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
+            public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
+            public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
+            public InputAction @Moving => m_Wrapper.m_PlayerInput_Moving;
+            public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
+            public InputAction @CameraZoom => m_Wrapper.m_PlayerInput_CameraZoom;
+            public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlayerInputActions set) { return set.Get(); }
+            public void SetCallbacks(IPlayerInputActions instance)
             {
-                @MousePosition.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
-                @MousePosition.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
-                @MousePosition.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
-                @MouseLBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
-                @MouseLBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
-                @MouseLBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
-                @MouseRBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
-                @MouseRBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
-                @MouseRBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
-                @Moving.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
-                @Moving.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
-                @Moving.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
-                @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
-                @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
-                @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
-                @CameraZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
-                @CameraZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
-                @CameraZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
-            }
-            m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @MousePosition.started += instance.OnMousePosition;
-                @MousePosition.performed += instance.OnMousePosition;
-                @MousePosition.canceled += instance.OnMousePosition;
-                @MouseLBClick.started += instance.OnMouseLBClick;
-                @MouseLBClick.performed += instance.OnMouseLBClick;
-                @MouseLBClick.canceled += instance.OnMouseLBClick;
-                @MouseRBClick.started += instance.OnMouseRBClick;
-                @MouseRBClick.performed += instance.OnMouseRBClick;
-                @MouseRBClick.canceled += instance.OnMouseRBClick;
-                @Moving.started += instance.OnMoving;
-                @Moving.performed += instance.OnMoving;
-                @Moving.canceled += instance.OnMoving;
-                @CameraRotation.started += instance.OnCameraRotation;
-                @CameraRotation.performed += instance.OnCameraRotation;
-                @CameraRotation.canceled += instance.OnCameraRotation;
-                @CameraZoom.started += instance.OnCameraZoom;
-                @CameraZoom.performed += instance.OnCameraZoom;
-                @CameraZoom.canceled += instance.OnCameraZoom;
+                if (m_Wrapper.m_PlayerInputActionsCallbackInterface != null)
+                {
+                    @MousePosition.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                    @MouseLBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                    @MouseLBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                    @MouseLBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseLBClick;
+                    @MouseRBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
+                    @MouseRBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
+                    @MouseRBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
+                    @Moving.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @Moving.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @Moving.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                    @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                    @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
+                    @CameraZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                    @CameraZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                    @CameraZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                }
+                m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @MousePosition.started += instance.OnMousePosition;
+                    @MousePosition.performed += instance.OnMousePosition;
+                    @MousePosition.canceled += instance.OnMousePosition;
+                    @MouseLBClick.started += instance.OnMouseLBClick;
+                    @MouseLBClick.performed += instance.OnMouseLBClick;
+                    @MouseLBClick.canceled += instance.OnMouseLBClick;
+                    @MouseRBClick.started += instance.OnMouseRBClick;
+                    @MouseRBClick.performed += instance.OnMouseRBClick;
+                    @MouseRBClick.canceled += instance.OnMouseRBClick;
+                    @Moving.started += instance.OnMoving;
+                    @Moving.performed += instance.OnMoving;
+                    @Moving.canceled += instance.OnMoving;
+                    @CameraRotation.started += instance.OnCameraRotation;
+                    @CameraRotation.performed += instance.OnCameraRotation;
+                    @CameraRotation.canceled += instance.OnCameraRotation;
+                    @CameraZoom.started += instance.OnCameraZoom;
+                    @CameraZoom.performed += instance.OnCameraZoom;
+                    @CameraZoom.canceled += instance.OnCameraZoom;
+                }
             }
         }
-    }
-    public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
-    public interface IPlayerInputActions
-    {
-        void OnMousePosition(InputAction.CallbackContext context);
-        void OnMouseLBClick(InputAction.CallbackContext context);
-        void OnMouseRBClick(InputAction.CallbackContext context);
-        void OnMoving(InputAction.CallbackContext context);
-        void OnCameraRotation(InputAction.CallbackContext context);
-        void OnCameraZoom(InputAction.CallbackContext context);
+        public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
+        public interface IPlayerInputActions
+        {
+            void OnMousePosition(InputAction.CallbackContext context);
+            void OnMouseLBClick(InputAction.CallbackContext context);
+            void OnMouseRBClick(InputAction.CallbackContext context);
+            void OnMoving(InputAction.CallbackContext context);
+            void OnCameraRotation(InputAction.CallbackContext context);
+            void OnCameraZoom(InputAction.CallbackContext context);
+        }
     }
 }

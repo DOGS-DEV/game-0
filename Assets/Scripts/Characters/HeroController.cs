@@ -1,34 +1,32 @@
+using System.Collections;
 using UnityEngine;
-using Zenject;
 
 namespace Game0 {
     public class HeroController : MonoBehaviour
     {
-        IInputable inputable;
-        private Rigidbody rigidbody;
+        [SerializeField] private HeroSettings heroSettings;
+        private Rigidbody heroRigidbody;
+        private Animator heroAnimator;
 
-        private float heroMovingSpeed = 1;
-
-        [Inject]
-        public void Consruct(IInputable inputable)
+        private void Awake()
         {
-            this.inputable = inputable;
-            this.inputable.MovingEvent += OnMoving;
+            heroRigidbody = GetComponent<Rigidbody>();
+            heroAnimator = GetComponentInChildren<Animator>();
         }
 
-        private void OnDestroy()
+        private void Update()
         {
-            if (this.inputable != null) {
-                this.inputable.MovingEvent -= OnMoving;
-            }
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+
+            Vector3 clamping = Vector3.ClampMagnitude(new Vector3(h, 0, v), 1);
+
+            heroAnimator.SetFloat("moveSpeed", clamping.magnitude);
+            heroRigidbody.velocity = clamping * heroSettings.MoveSpeed;
         }
 
-        private void OnMoving(object sender, Vector2 dest) {
-            Vector3 moving = new Vector3(dest.x, 0, dest.y);
-            transform.Translate(moving);
-            //rigidbody.AddForce(moving * heroMovingSpeed, ForceMode.VelocityChange);
+        public void OnMovement(object _, Vector2 vector2) {
+            //movingVector = vector2;
         }
     }
 }
-
-

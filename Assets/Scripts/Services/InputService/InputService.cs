@@ -1,9 +1,13 @@
 using System;
 using UnityEngine;
-using Zenject;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Game0 {
+
+    interface IInputable
+    {
+        event EventHandler<Vector2> MovingEvent;
+    }
 
     public class InputService : IInputable
     {
@@ -11,20 +15,21 @@ namespace Game0 {
 
         public event EventHandler<Vector2> MovingEvent;
 
-        [Inject]
-        private void Construnt(UserInput inputs) {
-            this.inputs = inputs;
-            this.inputs.Enable();
+        public InputService() {
+            inputs = new UserInput();
+            inputs.Enable();
             Subscribe();
         }
 
         private void Subscribe()
         {
+            this.inputs.PlayerInput.Moving.started += Moving;
             this.inputs.PlayerInput.Moving.performed += Moving;
         }
 
         private void Unsubscribe()
         {
+            this.inputs.PlayerInput.Moving.started -= Moving;
             this.inputs.PlayerInput.Moving.performed -= Moving;
         }
 
