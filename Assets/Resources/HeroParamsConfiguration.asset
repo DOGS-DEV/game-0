@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93b62d33b0a7459f9048ccb81137d6d, type: 3}
   m_Name: HeroParamsConfiguration
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 85

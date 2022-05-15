@@ -25,16 +25,22 @@ namespace Game0 {
         {
             this.inputs.PlayerInput.Moving.started += Moving;
             this.inputs.PlayerInput.Moving.performed += Moving;
+            this.inputs.PlayerInput.Moving.canceled += Moving;
         }
 
         private void Unsubscribe()
         {
             this.inputs.PlayerInput.Moving.started -= Moving;
             this.inputs.PlayerInput.Moving.performed -= Moving;
+            this.inputs.PlayerInput.Moving.canceled -= Moving;
         }
 
         private void Moving(CallbackContext context) {
-            Vector2 destination = context.ReadValue<Vector2>();
+
+            Vector2 destination = !context.canceled ?
+                context.ReadValue<Vector2>() :
+                Vector2.zero;
+
             MovingEvent?.Invoke(this, destination);
         }
 
