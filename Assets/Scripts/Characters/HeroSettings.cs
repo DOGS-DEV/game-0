@@ -9,9 +9,15 @@ public class HeroSettings : ScriptableObject
     [SerializeField, Tooltip("Скорость поворота")]
     private float rotationSpeed;
 
+    [SerializeField, Tooltip("Силы прыжка")]
+    private float jumpPower;
+
     /// <summary>Скорость перемещения</summary>
     public float MoveSpeed => moveSpeed;
 
     /// <summary>Скорость поворота</summary>
     public float RotationSpeed => rotationSpeed;
+
+    /// <summary>Сила прыжка</summary>
+    public float JumpPower => jumpPower;
 }

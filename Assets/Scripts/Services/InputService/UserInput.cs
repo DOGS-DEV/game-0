@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/UserInput/UserInput.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Services/InputService/UserInput.inputactions'
 
 using System;
 using System.Collections;
@@ -45,14 +45,6 @@ namespace Game0
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Moving"",
-                    ""type"": ""Button"",
-                    ""id"": ""ac61d8af-1a7c-4fec-9813-647f3eebf8e6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""CameraRotation"",
                     ""type"": ""Button"",
                     ""id"": ""bce85139-affb-4f22-8c82-aa753a25b2db"",
@@ -65,6 +57,30 @@ namespace Game0
                     ""type"": ""PassThrough"",
                     ""id"": ""c4cd11d2-7130-413d-a469-05d488e5cec9"",
                     ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Moving"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac61d8af-1a7c-4fec-9813-647f3eebf8e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb46eca5-1475-4b6e-9657-1b7df3792dab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""807e6c1b-e553-4372-a461-4735dd595b34"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -89,6 +105,39 @@ namespace Game0
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseRBClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6eaf7aba-ef49-418e-b51a-b578912c7516"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""717bdf49-b13d-4e6e-93e2-7eaa193cd10d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e75e385-d6e0-49c3-bd0b-1b48639ff90b"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -203,6 +252,17 @@ namespace Game0
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""0b70c3cb-ab04-4555-8e05-0bab28b9558c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""1D Axis"",
                     ""id"": ""1a4728ae-8e1a-4597-a217-7a27a696a6ab"",
                     ""path"": ""1DAxis"",
@@ -234,17 +294,6 @@ namespace Game0
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6eaf7aba-ef49-418e-b51a-b578912c7516"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MousePosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -291,18 +340,221 @@ namespace Game0
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Character"",
+            ""id"": ""7ff52042-9ea5-4514-854b-930f365b4dba"",
+            ""actions"": [
+                {
+                    ""name"": ""Space"",
+                    ""type"": ""Button"",
+                    ""id"": ""cdcada2e-ba59-482a-b5ee-dad1cdd7caaf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""629fa88b-0956-474d-ba22-f2caca84e137"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""RMBClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba6a29f5-a989-4426-84a3-480eec322cc9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LMBClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""54c587ce-2d31-46ec-93ab-4b05b8b14160"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1fab046c-60cf-404f-bb4d-a7a766801872"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""ce4012a8-a61e-4eac-aa21-e5998314732a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""3fba76c9-2826-474c-98b1-8b44408dfe7f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""2340bba9-5212-48b0-8589-437586e620a3"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""de35c23c-9dd1-4a59-a4de-64d2d203d3f6"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""98b6986f-ab08-4aff-b0eb-d0a9e2a566cb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""c90ab79b-0767-4d5e-ad1b-6613ee60a572"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""c7508544-ffb6-4860-81a7-02874693e338"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""af21fbfe-431b-4c89-98c3-d657324dbe06"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""490ca8bd-8edd-4ac4-9c39-986081dcbd40"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""89791d06-6d7a-4aa5-9ec0-189bd6120eaa"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fbe13033-6e37-4266-8e5c-b8383e60a0dd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RMBClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f59af210-e73b-4c85-bb27-dd3de4f90347"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LMBClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
             // PlayerInput
             m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
             m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
             m_PlayerInput_MouseLBClick = m_PlayerInput.FindAction("MouseLBClick", throwIfNotFound: true);
             m_PlayerInput_MouseRBClick = m_PlayerInput.FindAction("MouseRBClick", throwIfNotFound: true);
-            m_PlayerInput_Moving = m_PlayerInput.FindAction("Moving", throwIfNotFound: true);
             m_PlayerInput_CameraRotation = m_PlayerInput.FindAction("CameraRotation", throwIfNotFound: true);
             m_PlayerInput_CameraZoom = m_PlayerInput.FindAction("CameraZoom", throwIfNotFound: true);
+            m_PlayerInput_Moving = m_PlayerInput.FindAction("Moving", throwIfNotFound: true);
+            m_PlayerInput_Space = m_PlayerInput.FindAction("Space", throwIfNotFound: true);
+            m_PlayerInput_Aim = m_PlayerInput.FindAction("Aim", throwIfNotFound: true);
+            // Character
+            m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
+            m_Character_Space = m_Character.FindAction("Space", throwIfNotFound: true);
+            m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
+            m_Character_RMBClick = m_Character.FindAction("RMBClick", throwIfNotFound: true);
+            m_Character_LMBClick = m_Character.FindAction("LMBClick", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -355,9 +607,11 @@ namespace Game0
         private readonly InputAction m_PlayerInput_MousePosition;
         private readonly InputAction m_PlayerInput_MouseLBClick;
         private readonly InputAction m_PlayerInput_MouseRBClick;
-        private readonly InputAction m_PlayerInput_Moving;
         private readonly InputAction m_PlayerInput_CameraRotation;
         private readonly InputAction m_PlayerInput_CameraZoom;
+        private readonly InputAction m_PlayerInput_Moving;
+        private readonly InputAction m_PlayerInput_Space;
+        private readonly InputAction m_PlayerInput_Aim;
         public struct PlayerInputActions
         {
             private @UserInput m_Wrapper;
@@ -365,9 +619,11 @@ namespace Game0
             public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
             public InputAction @MouseLBClick => m_Wrapper.m_PlayerInput_MouseLBClick;
             public InputAction @MouseRBClick => m_Wrapper.m_PlayerInput_MouseRBClick;
-            public InputAction @Moving => m_Wrapper.m_PlayerInput_Moving;
             public InputAction @CameraRotation => m_Wrapper.m_PlayerInput_CameraRotation;
             public InputAction @CameraZoom => m_Wrapper.m_PlayerInput_CameraZoom;
+            public InputAction @Moving => m_Wrapper.m_PlayerInput_Moving;
+            public InputAction @Space => m_Wrapper.m_PlayerInput_Space;
+            public InputAction @Aim => m_Wrapper.m_PlayerInput_Aim;
             public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -386,15 +642,21 @@ namespace Game0
                     @MouseRBClick.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
                     @MouseRBClick.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
                     @MouseRBClick.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMouseRBClick;
-                    @Moving.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
-                    @Moving.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
-                    @Moving.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
                     @CameraRotation.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                     @CameraRotation.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                     @CameraRotation.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraRotation;
                     @CameraZoom.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
                     @CameraZoom.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
                     @CameraZoom.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnCameraZoom;
+                    @Moving.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @Moving.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @Moving.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMoving;
+                    @Space.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnSpace;
+                    @Space.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnSpace;
+                    @Space.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnSpace;
+                    @Aim.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAim;
+                    @Aim.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAim;
+                    @Aim.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAim;
                 }
                 m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
                 if (instance != null)
@@ -408,27 +670,108 @@ namespace Game0
                     @MouseRBClick.started += instance.OnMouseRBClick;
                     @MouseRBClick.performed += instance.OnMouseRBClick;
                     @MouseRBClick.canceled += instance.OnMouseRBClick;
-                    @Moving.started += instance.OnMoving;
-                    @Moving.performed += instance.OnMoving;
-                    @Moving.canceled += instance.OnMoving;
                     @CameraRotation.started += instance.OnCameraRotation;
                     @CameraRotation.performed += instance.OnCameraRotation;
                     @CameraRotation.canceled += instance.OnCameraRotation;
                     @CameraZoom.started += instance.OnCameraZoom;
                     @CameraZoom.performed += instance.OnCameraZoom;
                     @CameraZoom.canceled += instance.OnCameraZoom;
+                    @Moving.started += instance.OnMoving;
+                    @Moving.performed += instance.OnMoving;
+                    @Moving.canceled += instance.OnMoving;
+                    @Space.started += instance.OnSpace;
+                    @Space.performed += instance.OnSpace;
+                    @Space.canceled += instance.OnSpace;
+                    @Aim.started += instance.OnAim;
+                    @Aim.performed += instance.OnAim;
+                    @Aim.canceled += instance.OnAim;
                 }
             }
         }
         public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
+
+        // Character
+        private readonly InputActionMap m_Character;
+        private ICharacterActions m_CharacterActionsCallbackInterface;
+        private readonly InputAction m_Character_Space;
+        private readonly InputAction m_Character_Move;
+        private readonly InputAction m_Character_RMBClick;
+        private readonly InputAction m_Character_LMBClick;
+        public struct CharacterActions
+        {
+            private @UserInput m_Wrapper;
+            public CharacterActions(@UserInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Space => m_Wrapper.m_Character_Space;
+            public InputAction @Move => m_Wrapper.m_Character_Move;
+            public InputAction @RMBClick => m_Wrapper.m_Character_RMBClick;
+            public InputAction @LMBClick => m_Wrapper.m_Character_LMBClick;
+            public InputActionMap Get() { return m_Wrapper.m_Character; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(CharacterActions set) { return set.Get(); }
+            public void SetCallbacks(ICharacterActions instance)
+            {
+                if (m_Wrapper.m_CharacterActionsCallbackInterface != null)
+                {
+                    @Space.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSpace;
+                    @Space.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSpace;
+                    @Space.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnSpace;
+                    @Move.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnMove;
+                    @RMBClick.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRMBClick;
+                    @RMBClick.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRMBClick;
+                    @RMBClick.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnRMBClick;
+                    @LMBClick.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLMBClick;
+                    @LMBClick.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLMBClick;
+                    @LMBClick.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLMBClick;
+                }
+                m_Wrapper.m_CharacterActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Space.started += instance.OnSpace;
+                    @Space.performed += instance.OnSpace;
+                    @Space.canceled += instance.OnSpace;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
+                    @RMBClick.started += instance.OnRMBClick;
+                    @RMBClick.performed += instance.OnRMBClick;
+                    @RMBClick.canceled += instance.OnRMBClick;
+                    @LMBClick.started += instance.OnLMBClick;
+                    @LMBClick.performed += instance.OnLMBClick;
+                    @LMBClick.canceled += instance.OnLMBClick;
+                }
+            }
+        }
+        public CharacterActions @Character => new CharacterActions(this);
+        private int m_KeyboardSchemeIndex = -1;
+        public InputControlScheme KeyboardScheme
+        {
+            get
+            {
+                if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+                return asset.controlSchemes[m_KeyboardSchemeIndex];
+            }
+        }
         public interface IPlayerInputActions
         {
             void OnMousePosition(InputAction.CallbackContext context);
             void OnMouseLBClick(InputAction.CallbackContext context);
             void OnMouseRBClick(InputAction.CallbackContext context);
-            void OnMoving(InputAction.CallbackContext context);
             void OnCameraRotation(InputAction.CallbackContext context);
             void OnCameraZoom(InputAction.CallbackContext context);
+            void OnMoving(InputAction.CallbackContext context);
+            void OnSpace(InputAction.CallbackContext context);
+            void OnAim(InputAction.CallbackContext context);
+        }
+        public interface ICharacterActions
+        {
+            void OnSpace(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
+            void OnRMBClick(InputAction.CallbackContext context);
+            void OnLMBClick(InputAction.CallbackContext context);
         }
     }
 }

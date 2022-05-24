@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Game0 {
     public class HeroController : MonoBehaviour
@@ -17,17 +18,6 @@ namespace Game0 {
             heroAnimator = GetComponentInChildren<Animator>();
         }
 
-        private void Update()
-        {
-            //float h = Input.GetAxis("Horizontal");
-            //float v = Input.GetAxis("Vertical");
-
-            //Vector3 clamping = Vector3.ClampMagnitude(new Vector3(h, 0, v), 1);
-
-            //heroAnimator.SetFloat("moveSpeed", clamping.magnitude);
-            //heroRigidbody.velocity = clamping * heroSettings.MoveSpeed;
-        }
-
         private void FixedUpdate()
         {
             if(movingVector != Vector3.zero)
@@ -36,14 +26,28 @@ namespace Game0 {
             }
         }
 
-        public void OnMovement(object _, Vector2 vector2) {
-            if (vector2 != Vector2.zero)
+        public void OnMovement(Vector2 destination) {
+            if (destination != Vector2.zero)
             {
-                movingVector = Vector3.ClampMagnitude(new Vector3(vector2.x, 0, vector2.y), 1);
+                movingVector = Vector3.ClampMagnitude(new Vector3(destination.x, 0, destination.y), 1);
             }
             else {
                 movingVector = Vector3.zero;
             }
+        }
+
+        public void OnJump()
+        {
+           heroRigidbody.AddForce(Vector3.up * heroSettings.JumpPower, ForceMode.Impulse);
+        }
+
+        public void OnClick() {
+            Debug.Log("OnClick");
+        }
+
+        public void OnAim()
+        {
+            Debug.Log("OnAim");
         }
 
         private IEnumerator MovingCoroutine() {

@@ -5,12 +5,13 @@ namespace Game0 {
     public class Scene001Manager : MonoBehaviour
     {
         [SerializeField] private HeroController hero;
+        [SerializeField] private ThridPersonCameraController cam;
 
-        private IInputable inputable;
+        private InputService inputService;
 
         private void Start()
         {
-            this.inputable = new InputService();
+            inputService = new InputService();
             Subscribe();
         }
 
@@ -21,12 +22,17 @@ namespace Game0 {
 
         private void Subscribe()
         {
-            inputable.MovingEvent += hero.OnMovement;
+            EventManager.OnMove += hero.OnMovement;
+            EventManager.OnSpace += hero.OnJump;
+            EventManager.OnLMBClick += hero.OnClick;
+            EventManager.OnRMBClick += cam.OnAim;
         }
 
         private void Unsubscribe() {
-            inputable.MovingEvent -= hero.OnMovement;
+            EventManager.OnMove -= hero.OnMovement;
+            EventManager.OnSpace -= hero.OnJump;
+            EventManager.OnLMBClick -= hero.OnClick;
+            EventManager.OnRMBClick -= cam.OnAim;
         }
     }
-
 }
